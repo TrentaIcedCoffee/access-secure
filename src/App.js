@@ -4,11 +4,13 @@ import "./App.css";
 //import Login from "./Login";
 import Home from "./Home";
 import Login from "./components/Login/login";
+import Register from "./components/Login/register";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLogginActive: true,
       user: {}
     };
   }
@@ -30,18 +32,62 @@ class App extends Component {
     });
   }
 
+  changeState() {
+    const { isLogginActive } = this.state;
+    if (isLogginActive) {
+      this.rightSide.classList.remove("right");
+      this.rightSide.classList.add("left");
+    } else {
+      this.rightSide.classList.remove("left");
+      this.rightSide.classList.add("right");
+    }
+
+    this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
+  }
   render() {
     //return <div className="App">{this.state.user ? <Home /> : <Login />}</div>;
-    return (
-      <div className="App">
-        <div className="login">
-          <div className="container">
-            {this.state.user ? <Home /> : <Login />}
+    const { user } = this.state;
+    const { isLogginActive } = this.state;
+    const current = isLogginActive ? "Register" : "Login";
+    const currentActive = isLogginActive ? "login" : "register";
+    if (user) {
+      return <Home />;
+    } else {
+      return (
+        <div className="App">
+          <div className="login">
+            <div className="container">
+              {!user && isLogginActive && (
+                <Login containerRef={ref => (this.current = ref)} />
+              )}
+              {!user && !isLogginActive && (
+                <Register containerRef={ref => (this.current = ref)} />
+              )}
+            </div>
+            <RightSide
+              current={current}
+              containerRef={ref => (this.rightSide = ref)}
+              onClick={this.changeState.bind(this)}
+            />
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 }
+
+const RightSide = props => {
+  return (
+    <div
+      className="right-side"
+      ref={props.containerRef}
+      onClick={props.onClick}
+    >
+      <div className="inner-container">
+        <div className="text">{props.current}</div>
+      </div>
+    </div>
+  );
+};
 
 export default App;

@@ -5,10 +5,10 @@ import "./styles.css";
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.handleChange = this.handleChange.bind(this);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      warning: "123"
     };
   }
   login = e => {
@@ -19,15 +19,17 @@ class Login extends Component {
       .then(u => {})
       .catch(error => {
         console.log(error);
+        this.handleError(error);
       });
   };
-  handleChange(e) {
+  handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
+  handleError = e => {};
 
   render() {
     return (
-      <div className="base-container">
+      <div className="base-container" ref={this.props.containerRef}>
         <div className="header">Login</div>
         <div className="content">
           <div className="image">
@@ -64,6 +66,7 @@ class Login extends Component {
           >
             Login
           </button>
+          <div className="warning">{this.state.warning}</div>
         </div>
       </div>
     );
