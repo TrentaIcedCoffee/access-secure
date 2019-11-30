@@ -6,8 +6,6 @@ import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 class Login extends Component {
   constructor(props) {
     super(props);
-    //this.login = this.login.bind(this);
-    //this.signup = this.signup.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.state = {
       email: "",
