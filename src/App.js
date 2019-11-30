@@ -31,12 +31,16 @@ class App extends Component {
   }
 
   render() {
-    return <div className="App">{this.state.user ? <Home /> : <Login />}</div>;
-    // return (
-    //   <div className="App">
-    //     <Login />
-    //   </div>
-    // );
+    //return <div className="App">{this.state.user ? <Home /> : <Login />}</div>;
+    return (
+      <div className="App">
+        <div className="login">
+          <div className="container">
+            {this.state.user ? <Home /> : <Login />}
+          </div>
+        </div>
+      </div>
+    );
   }
 }
 

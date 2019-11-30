@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import loginImg from "../../logo.jpeg";
 import fire from "../../config/Fire";
-
+import "./styles.css";
 class Login extends Component {
   constructor(props) {
     super(props);
