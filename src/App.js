@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import fire from "./config/Fire";
 import "./App.css";
-//import Login from "./Login";
-import Home from "./Home";
-import Login from "./components/Login/login";
-import Register from "./components/Login/register";
+import Dashboard from "./components/Dashboard/dashboard";
+import { Login, Register } from "./components/Login/index";
+//import Login from "./components/Login/login";
+//import Register from "./components/Login/register";
 
 class App extends Component {
   constructor(props) {
@@ -45,13 +45,12 @@ class App extends Component {
     this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
   }
   render() {
-    //return <div className="App">{this.state.user ? <Home /> : <Login />}</div>;
     const { user } = this.state;
     const { isLogginActive } = this.state;
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     if (user) {
-      return <Home />;
+      return <Dashboard />;
     } else {
       return (
         <div className="App">

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import loginImg from "../../logo.jpeg";
 import fire from "../../config/Fire";
-import "./styles.css";
 
 class Register extends Component {
   constructor(props) {

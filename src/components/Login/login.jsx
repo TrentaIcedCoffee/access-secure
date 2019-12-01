@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import loginImg from "../../logo.jpeg";
 import fire from "../../config/Fire";
 import "./styles.css";
+
+var x = 123;
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -66,7 +69,7 @@ class Login extends Component {
           >
             Login
           </button>
-          <div className="warning">{this.state.warning}</div>
+          {/* <div className="warning">{this.state.warning}</div> */}
         </div>
       </div>
     );

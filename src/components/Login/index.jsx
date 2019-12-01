@@ -1,3 +1,5 @@
 import "./styles.less";
-export { Login } from "./login";
-export { Register } from "./register";
+import Login from "./login";
+import Register from "./register";
+export { Login };
+export { Register };
