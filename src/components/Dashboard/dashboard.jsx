@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-dom";
 import fire from "../../config/Fire";
-import "./styles.css";
-import { initializeApp } from "firebase";
+import "./styles.less";
+import NaviBar from "./NaviBar";
+import DataDisplay from "./dataDisplay";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.logout = this.logout.bind(this);
     this.addToDB = this.addToDB.bind(this);
     this.state = {
       user: {},
@@ -20,10 +20,6 @@ class Dashboard extends Component {
       this.state.email = user.email;
       console.log(user);
     });
-  }
-
-  logout() {
-    fire.auth().signOut();
   }
 
   addToDB() {
@@ -43,10 +39,9 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className="col-md-6">
-        <h1>Your Dashboard</h1>
-        <button onClick={this.logout}>Logout</button>
-        <button onClick={this.addToDB}>Test</button>
+      <div>
+        <NaviBar containerRef={this.state.email} />
+        <DataDisplay />
       </div>
     );
   }
