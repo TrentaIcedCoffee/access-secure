@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { IconButton, Button, Avatar, Menu, MenuItem } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import fire from "../../config/Fire";
 
 class NaviBar extends Component {
@@ -40,15 +41,15 @@ class NaviBar extends Component {
               color="inherit"
               aria-label="menu"
             >
-              <MenuIcon onClick={this.props.triggerParentUpdate} />
+              <MenuIcon Button onClick={this.props.triggerParentUpdate} />
             </IconButton>
             <Typography variant="h6" className="title">
               {this.state.status}
             </Typography>
             <Avatar>{this.state.name}</Avatar>
-            <Button color="inherit" onClick={this.logout}>
-              Logout
-            </Button>
+            <IconButton color="inherit">
+              <ExitToAppIcon onClick={this.logout} />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </div>

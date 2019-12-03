@@ -4,23 +4,38 @@ import fire from "../../config/Fire";
 import "./styles.css";
 import NaviBar from "./NaviBar";
 import DataDisplay from "./dataDisplay";
-import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import IconButton from "@material-ui/core/IconButton";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import { Button } from "@material-ui/core";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+
+import {
+  MenuItem,
+  Paper,
+  Button,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  AppBar,
+  Menu,
+  Toolbar,
+  ClickAwayListener,
+  IconButton
+} from "@material-ui/core";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.addToDB = this.addToDB.bind(this);
-    this.toggleDrawer = this.toggleDrawer.bind(this);
     this.clickOnMenu = this.clickOnMenu.bind(this);
     this.state = {
       contantStatus: "dashboard",
-      DrawerVisible: false,
+      open: false,
+      show: null,
       user: {},
       uid: "",
       email: "",
@@ -32,16 +47,64 @@ class Dashboard extends Component {
       console.log(user);
     });
   }
-  //componentDidMount() {}
-  toggleDrawer() {
-    this.setState({
-      DrawerVisible: !this.state.DrawerVisible
-    });
-  }
+
   // this function will be called by NaviBar
   clickOnMenu() {
-    this.setState({ DrawerVisible: true });
+    this.handleToggle();
     console.log("called from children");
+  }
+  handleToggle = () => this.setState({ open: !this.state.open });
+  handleClickAway = () => {
+    // console.log("enter ClickAway");
+    // this.setState({ open: false });
+  };
+  // DIY here
+  showBar = () => this.setState({ show: "bar", open: false });
+  showFoo = () => this.setState({ show: "foo", open: false });
+  showZee = () => this.setState({ show: "zee", open: false });
+
+  render() {
+    let content = null;
+    switch (this.state.show) {
+      case "foo":
+        content = <div>Foo</div>;
+        break;
+      case "bar":
+        content = <div>bar</div>;
+        break;
+      case "zee":
+        content = <div>zee</div>;
+        break;
+      default:
+        content = <h1>Waiting</h1>;
+    }
+    return (
+      <div className="Navi">
+        <CssBaseline />
+        <NaviBar
+          containerRef={this.state.email}
+          statusRef={this.state.contantStatus}
+          triggerParentUpdate={this.clickOnMenu}
+        />
+        <Drawer
+          width={250}
+          open={this.state.open}
+          onRequestChange={open => this.setState({ open })}
+        >
+          <AppBar title="AppBar" />
+          <IconButton>
+            {""}
+            <ArrowBackIosIcon onClick={this.handleToggle} fontSize="small" />
+          </IconButton>
+
+          <MenuItem onClick={this.showFoo}>ShowFoo</MenuItem>
+          <MenuItem onClick={this.showBar}>ShowBar</MenuItem>
+        </Drawer>
+        <Divider />
+        {/* below is where dashboard shows */}
+        <Paper zDepth={5}>{content}</Paper>
+      </div>
+    );
   }
   //Below is use case of db
   addToDB() {
@@ -57,19 +120,6 @@ class Dashboard extends Component {
       .catch(function(e) {
         console.error("Error adding document: ", e);
       });
-  }
-
-  render() {
-    return (
-      <div className="root">
-        <CssBaseline />
-        <NaviBar
-          containerRef={this.state.email}
-          statusRef={this.state.contantStatus}
-          triggerParentUpdate={this.clickOnMenu}
-        />
-      </div>
-    );
   }
 }
 
