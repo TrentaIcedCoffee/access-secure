@@ -79,15 +79,16 @@ class Dashboard extends Component {
               className="menuButton"
               color="inherit"
               aria-label="menu"
+              onClick={this.handleToggle}
             >
-              <MenuIcon Button onClick={this.handleToggle} />
+              <MenuIcon />
             </IconButton>
             <Typography variant="h6" className="title">
               {this.state.contantStatus}
             </Typography>
             <Avatar>{this.state.name}</Avatar>
-            <IconButton color="inherit">
-              <ExitToAppIcon onClick={this.logout} />
+            <IconButton color="inherit" onClick={this.logout}>
+              <ExitToAppIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -123,7 +124,6 @@ class Dashboard extends Component {
         <Divider />
         {/* below is where dashboard shows */}
         <Paper>{content}</Paper>
-        <Button onClick={this.showSnackbar}>Test Snackbar</Button>
         <Snackbar
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           open={this.state.snackBarOpen}
@@ -175,6 +175,7 @@ class Dashboard extends Component {
   init = () => {
     this.state.name = this.state.email.toUpperCase().substring(0, 1);
   };
+  // Key function to use App.js.SnackBar
   sendDataToParent = (type, message) => {
     this.props.parentCallback(type, message);
     console.log("Dashboard.js -> Parent");
