@@ -21,8 +21,8 @@ export default fire;
 // init db: db: fire.firestore(),
 // addToDB = () => {
 //   this.state.db
-//     .collection(this.state.uid)
-//     .add({
+//     .collection("users").doc(this.state.uid)
+//     .add({ //For add new doc
 //       Ip: "TestIp",
 //       Username: "testUser"
 //     })
@@ -33,3 +33,8 @@ export default fire;
 //       console.error("Error adding document: ", e);
 //     });
 // };
+// .add() === .doc.set()
+// .set({password: 123486,love: "code"},{ merge: true }) to Merge on exist/noexist doc
+// .update = .set({},{merge:true}); In update, we can use {"apiki.app1"} to ref to its' value
+//  .delete() will delete that doc
+//
