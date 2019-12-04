@@ -12,6 +12,9 @@ import CloseIcon from "@material-ui/icons/Close";
 import ErrorIcon from "@material-ui/icons/Error";
 import InfoIcon from "@material-ui/icons/Info";
 import MySnackbarContentWrapper from "../SnackBar/mySnackbarContentWrapper";
+import LogsPage from "./logsPage";
+import BlacklistPage from "./blacklistPage";
+import WhitelistPage from "./whitelistPage";
 
 import {
   MenuItem,
@@ -41,30 +44,39 @@ class Dashboard extends Component {
       snackBarMessage: "",
       snackType: "info",
       open: false,
-      show: null,
-      user: {},
+      show: "dashboard",
       uid: "",
       email: "",
       db: fire.firestore(),
-      name: ""
+      name: "",
+      user: {}
     };
-    this.state.uid = fire.auth().onAuthStateChanged(user => {
-      this.state.uid = user.uid;
-      this.state.email = user.email;
+    fire.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+        this.state.uid = user.uid;
+        this.state.email = user.email;
+      }
     });
   }
 
   render() {
+    // decide which page to show
     let content = null;
     switch (this.state.show) {
-      case "foo":
-        content = <div>Foo</div>;
+      case "dashboard":
+        content = (
+          <LogsPage
+            parentCallback={this.callbackFunction}
+            uid={this.state.uid}
+          />
+        );
         break;
-      case "bar":
-        content = <div>bar</div>;
+      case "blacklist":
+        content = <BlacklistPage parentCallback={this.callbackFunction} />;
         break;
-      case "zee":
-        content = <div>zee</div>;
+      case "whitelist":
+        content = <WhitelistPage parentCallback={this.callbackFunction} />;
         break;
       default:
         content = <h1>Waiting</h1>;
@@ -101,19 +113,19 @@ class Dashboard extends Component {
             </IconButton>
           </Typography>
           <List>
-            <ListItem button onClick={this.showBar}>
+            <ListItem button onClick={this.showDashboard}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button onClick={this.showFoo}>
+            <ListItem button onClick={this.showBlacklist}>
               <ListItemIcon>
                 <BlockIcon />
               </ListItemIcon>
               <ListItemText primary="Black List" />
             </ListItem>
-            <ListItem button onClick={this.showZee}>
+            <ListItem button onClick={this.showWhitelist}>
               <ListItemIcon>
                 <ListAltIcon />
               </ListItemIcon>
@@ -123,7 +135,7 @@ class Dashboard extends Component {
         </Drawer>
         <Divider />
         {/* below is where dashboard shows */}
-        <Paper>{content}</Paper>
+        <Typography>{content}</Typography>
         <Snackbar
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           open={this.state.snackBarOpen}
@@ -147,20 +159,33 @@ class Dashboard extends Component {
     // console.log("enter ClickAway");
     // this.setState({ open: false });
   };
-  showSnackbar = () => {
-    this.setState({ snackBarOpen: true });
+  // this function can take data from children
+  callbackFunction = (type, message) => {
+    this.setState({
+      snackBarOpen: true,
+      snackBarType: type,
+      snackBarMessage: message
+    });
   };
   // DIY Function here
-  showBar = () =>
+  showDashboard = () =>
     this.setState({
       contantStatus: "Dashboard",
-      show: "bar",
+      show: "dashboard",
       open: false
     });
-  showFoo = () =>
-    this.setState({ contantStatus: "Black List", show: "foo", open: false });
-  showZee = () =>
-    this.setState({ contantStatus: "White List", show: "zee", open: false });
+  showBlacklist = () =>
+    this.setState({
+      contantStatus: "Black List",
+      show: "blacklist",
+      open: false
+    });
+  showWhitelist = () =>
+    this.setState({
+      contantStatus: "White List",
+      show: "whitelist",
+      open: false
+    });
   logout = () => {
     console.log("Logouting");
     fire.auth().signOut();
@@ -179,21 +204,6 @@ class Dashboard extends Component {
   sendDataToParent = (type, message) => {
     this.props.parentCallback(type, message);
     console.log("Dashboard.js -> Parent");
-  };
-  //Below is use case of db
-  addToDB = () => {
-    this.state.db
-      .collection(this.state.uid)
-      .add({
-        Ip: "TestIp",
-        Username: "testUser"
-      })
-      .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch(function(e) {
-        console.error("Error adding document: ", e);
-      });
   };
 }
 

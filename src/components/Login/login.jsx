@@ -21,7 +21,7 @@ class Login extends Component {
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then(u => {})
+      .then(u => this.sendDataToParent("success", "Log in Success!"))
       .catch(error => {
         console.log(error);
         this.setState({
@@ -31,7 +31,6 @@ class Login extends Component {
         });
         this.handleError(error);
       });
-    this.sendDataToParent("success", "Log in Success!");
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });

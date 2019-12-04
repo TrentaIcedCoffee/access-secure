@@ -1,4 +1,4 @@
-import firebase from "firebase";
+import firebase, { firestore } from "firebase";
 
 const config = {
   apiKey: "AIzaSyD5dREguYCWhOfBIR2A-0_xp7zCipO6l08",
@@ -12,5 +12,24 @@ const config = {
 };
 // Initialize Firebase
 const fire = firebase.initializeApp(config);
+const db = fire.firestore(config);
 
 export default fire;
+
+// Here are some usage of firestore
+// Below is use case of db
+// init db: db: fire.firestore(),
+// addToDB = () => {
+//   this.state.db
+//     .collection(this.state.uid)
+//     .add({
+//       Ip: "TestIp",
+//       Username: "testUser"
+//     })
+//     .then(function(docRef) {
+//       console.log("Document written with ID: ", docRef.id);
+//     })
+//     .catch(function(e) {
+//       console.error("Error adding document: ", e);
+//     });
+// };

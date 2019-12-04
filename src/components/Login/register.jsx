@@ -39,6 +39,7 @@ class Register extends Component {
     fire
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => this.sendDataToParent("success", "Register Success!"))
       .catch(error => {
         console.log(error);
         this.setState({
@@ -47,7 +48,6 @@ class Register extends Component {
           snackBarMessage: error
         });
       });
-    this.sendDataToParent("success", "Register Success!");
   };
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
