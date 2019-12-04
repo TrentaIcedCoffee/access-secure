@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Link } from "react-dom";
 import fire from "../../config/Fire";
 import "./styles.css";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import BlockIcon from "@material-ui/icons/Block";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import MenuIcon from "@material-ui/icons/Menu";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import CloseIcon from "@material-ui/icons/Close";
+import ErrorIcon from "@material-ui/icons/Error";
+import InfoIcon from "@material-ui/icons/Info";
+import MySnackbarContentWrapper from "../SnackBar/mySnackbarContentWrapper";
 
 import {
   MenuItem,
@@ -28,16 +28,18 @@ import {
   ClickAwayListener,
   Avatar,
   IconButton,
-  Typography
+  Typography,
+  Snackbar
 } from "@material-ui/core";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
-    this.addToDB = this.addToDB.bind(this);
-    this.clickOnMenu = this.clickOnMenu.bind(this);
     this.state = {
       contantStatus: "Dashboard",
+      snackBarOpen: false,
+      snackBarMessage: "",
+      snackType: "info",
       open: false,
       show: null,
       user: {},
@@ -47,28 +49,6 @@ class Dashboard extends Component {
       name: ""
     };
   }
-
-  // this function will be called by NaviBar
-  clickOnMenu() {
-    this.handleToggle();
-    console.log("called from children");
-  }
-  handleToggle = () => this.setState({ open: !this.state.open });
-  handleClickAway = () => {
-    // console.log("enter ClickAway");
-    // this.setState({ open: false });
-  };
-  // DIY Function here
-  showBar = () =>
-    this.setState({ contantStatus: "Dashboard", show: "bar", open: false });
-  showFoo = () =>
-    this.setState({ contantStatus: "Black List", show: "foo", open: false });
-  showZee = () =>
-    this.setState({ contantStatus: "White List", show: "zee", open: false });
-  logout = () => {
-    console.log("Logouting");
-    fire.auth().signOut();
-  };
 
   render() {
     let content = null;
@@ -85,14 +65,9 @@ class Dashboard extends Component {
       default:
         content = <h1>Waiting</h1>;
     }
-    this.state.uid = fire.auth().onAuthStateChanged(user => {
-      this.state.uid = user.uid;
-      this.state.email = user.email;
-      console.log(user);
-    });
-    this.state.name = this.state.email.toUpperCase().substring(0, 1);
+    this.init();
     return (
-      <div className="Navi">
+      <div>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -106,18 +81,14 @@ class Dashboard extends Component {
             <Typography variant="h6" className="title">
               {this.state.contantStatus}
             </Typography>
-            <Avatar className="MyAvatar">{this.state.name}</Avatar>
+            <Avatar>{this.state.name}</Avatar>
             <IconButton color="inherit">
               <ExitToAppIcon onClick={this.logout} />
             </IconButton>
           </Toolbar>
         </AppBar>
 
-        <Drawer
-          className="drawerHeader"
-          open={this.state.open}
-          onRequestChange={open => this.setState({ open })}
-        >
+        <Drawer className="drawerHeader" open={this.state.open}>
           <AppBar title="AppBar" />
           <Typography align="right">
             <IconButton onClick={this.handleToggle}>
@@ -148,11 +119,65 @@ class Dashboard extends Component {
         <Divider />
         {/* below is where dashboard shows */}
         <Paper>{content}</Paper>
+        <Button onClick={this.showSnackbar}>Test Snackbar</Button>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={this.state.snackBarOpen}
+          autoHideDuration={5000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant={this.state.snackType}
+            message={this.state.snackBarMessage}
+          />
+        </Snackbar>
       </div>
     );
   }
+  handleToggle = e => {
+    this.setState({ open: !this.state.open });
+  };
+  handleError = e => {};
+  handleClickAway = () => {
+    // console.log("enter ClickAway");
+    // this.setState({ open: false });
+  };
+  showSnackbar = () => {
+    this.setState({ snackBarOpen: true });
+  };
+  // DIY Function here
+  showBar = () =>
+    this.setState({
+      contantStatus: "Dashboard",
+      show: "bar",
+      open: false,
+      snackBarOpen: true,
+      snackBarMessage: "Swich to Dashboard"
+    });
+  showFoo = () =>
+    this.setState({ contantStatus: "Black List", show: "foo", open: false });
+  showZee = () =>
+    this.setState({ contantStatus: "White List", show: "zee", open: false });
+  logout = () => {
+    console.log("Logouting");
+    fire.auth().signOut();
+  };
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ open: false, snackBarOpen: false });
+  };
+  init = () => {
+    this.state.uid = fire.auth().onAuthStateChanged(user => {
+      this.state.uid = user.uid;
+      this.state.email = user.email;
+    });
+    this.state.name = this.state.email.toUpperCase().substring(0, 1);
+  };
   //Below is use case of db
-  addToDB() {
+  addToDB = () => {
     this.state.db
       .collection(this.state.uid)
       .add({
@@ -165,7 +190,7 @@ class Dashboard extends Component {
       .catch(function(e) {
         console.error("Error adding document: ", e);
       });
-  }
+  };
 }
 
 export default Dashboard;

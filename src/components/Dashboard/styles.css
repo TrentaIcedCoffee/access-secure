@@ -2,36 +2,25 @@
   flex-grow: 1;
   display: flex;
 }
-
 .menuButton {
   margin-right: 2px;
 }
-
 .title {
   flex-grow: 1;
 }
-
 .user {
   margin-right: 2em;
 }
-
 .orange {
   background-color: orange;
   color: antiquewhite;
 }
-
 .drawerHeader {
   display: flex;
   align-items: center;
   padding: 0px 1px;
   justify-content: flex-end;
 }
-
 .list {
   width: 250;
-}
-
-.MyAvatar {
-  color: aliceblue;
-  background-color: coral;
 }

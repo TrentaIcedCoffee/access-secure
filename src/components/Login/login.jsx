@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import loginImg from "../../logo.jpeg";
 import fire from "../../config/Fire";
 import "./styles.css";
-
-var x = 123;
+import { Snackbar } from "@material-ui/core";
+import MySnackbarContentWrapper from "../SnackBar/mySnackbarContentWrapper";
 
 class Login extends Component {
   constructor(props) {
@@ -11,7 +11,9 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      warning: "123"
+      snackBarOpen: false,
+      snackBarType: "info",
+      snackBarMessage: "test"
     };
   }
   login = e => {
@@ -22,6 +24,11 @@ class Login extends Component {
       .then(u => {})
       .catch(error => {
         console.log(error);
+        this.setState({
+          snackBarOpen: true,
+          snackBarType: "error",
+          snackBarMessage: "Email and Password not match!"
+        });
         this.handleError(error);
       });
   };
@@ -29,6 +36,12 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
   handleError = e => {};
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ open: false, snackBarOpen: false });
+  };
 
   render() {
     return (
@@ -69,8 +82,19 @@ class Login extends Component {
           >
             Login
           </button>
-          {/* <div className="warning">{this.state.warning}</div> */}
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={this.state.snackBarOpen}
+          autoHideDuration={5000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant={this.state.snackBarType}
+            message={this.state.snackBarMessage}
+          />
+        </Snackbar>
       </div>
     );
   }

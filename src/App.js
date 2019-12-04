@@ -3,15 +3,18 @@ import fire from "./config/Fire";
 import "./App.css";
 import Dashboard from "./components/Dashboard/dashboard";
 import { Login, Register } from "./components/Login/index";
-//import Login from "./components/Login/login";
-//import Register from "./components/Login/register";
+import { Snackbar } from "@material-ui/core";
+import MySnackbarContentWrapper from "./components/SnackBar/mySnackbarContentWrapper";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLogginActive: true,
-      user: {}
+      user: {},
+      snackBarOpen: false,
+      snackBarType: "info",
+      snackBarMessage: "test"
     };
   }
 
@@ -21,7 +24,7 @@ class App extends Component {
 
   authListener() {
     fire.auth().onAuthStateChanged(user => {
-      console.log(user);
+      //console.log(user);
       if (user) {
         this.setState({ user });
         //localStorage.setItem('user',user.uid);
@@ -41,18 +44,18 @@ class App extends Component {
       this.rightSide.classList.remove("left");
       this.rightSide.classList.add("right");
     }
-
     this.setState(prevState => ({ isLogginActive: !prevState.isLogginActive }));
   }
   render() {
+    let content = null;
     const { user } = this.state;
     const { isLogginActive } = this.state;
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     if (user) {
-      return <Dashboard />;
+      content = <Dashboard />;
     } else {
-      return (
+      content = (
         <div className="App">
           <div className="login">
             <div className="container">
@@ -72,7 +75,30 @@ class App extends Component {
         </div>
       );
     }
+    return (
+      <div>
+        {content}
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={this.state.snackBarOpen}
+          autoHideDuration={5000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant="success"
+            message="This is a success message!"
+          />
+        </Snackbar>
+      </div>
+    );
   }
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ open: false, snackBarOpen: false });
+  };
 }
 
 const RightSide = props => {

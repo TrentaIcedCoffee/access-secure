@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import loginImg from "../../logo.jpeg";
 import fire from "../../config/Fire";
+import { Snackbar } from "@material-ui/core";
+import MySnackbarContentWrapper from "../SnackBar/mySnackbarContentWrapper";
 
 class Register extends Component {
   constructor(props) {
@@ -9,10 +11,30 @@ class Register extends Component {
     this.state = {
       email: "",
       password: "",
-      repassword: ""
+      repassword: "",
+      snackBarOpen: false,
+      snackBarType: "info",
+      snackBarMessage: "test"
     };
   }
   signup = e => {
+    if (this.state.password != this.state.repassword) {
+      console.error("Password not match");
+      this.setState({
+        snackBarOpen: true,
+        snackBarType: "error",
+        snackBarMessage: "Passwordes not match!"
+      });
+      return;
+    } else if (this.state.password.length < 6) {
+      console.error("Password too short");
+      this.setState({
+        snackBarOpen: true,
+        snackBarType: "warning",
+        snackBarMessage: "Password cannot be shorter than 6!"
+      });
+      return;
+    }
     e.preventDefault();
     fire
       .auth()
@@ -24,6 +46,12 @@ class Register extends Component {
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
+  handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ open: false, snackBarOpen: false });
+  };
   render() {
     return (
       <div className="base-container" ref={this.props.containerRef}>
@@ -70,6 +98,18 @@ class Register extends Component {
             Register
           </button>
         </div>
+        <Snackbar
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          open={this.state.snackBarOpen}
+          autoHideDuration={5000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant={this.state.snackBarType}
+            message={this.state.snackBarMessage}
+          />
+        </Snackbar>
       </div>
     );
   }
