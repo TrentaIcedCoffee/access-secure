@@ -41,7 +41,13 @@ class Register extends Component {
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .catch(error => {
         console.log(error);
+        this.setState({
+          snackBarOpen: true,
+          snackBarType: "error",
+          snackBarMessage: error
+        });
       });
+    this.sendDataToParent("success", "Register Success!");
   };
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -51,6 +57,10 @@ class Register extends Component {
       return;
     }
     this.setState({ open: false, snackBarOpen: false });
+  };
+  sendDataToParent = (type, message) => {
+    this.props.parentCallback(type, message);
+    console.log("Register.js -> Parent");
   };
   render() {
     return (

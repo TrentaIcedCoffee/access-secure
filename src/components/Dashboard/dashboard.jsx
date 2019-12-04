@@ -48,6 +48,10 @@ class Dashboard extends Component {
       db: fire.firestore(),
       name: ""
     };
+    this.state.uid = fire.auth().onAuthStateChanged(user => {
+      this.state.uid = user.uid;
+      this.state.email = user.email;
+    });
   }
 
   render() {
@@ -151,9 +155,7 @@ class Dashboard extends Component {
     this.setState({
       contantStatus: "Dashboard",
       show: "bar",
-      open: false,
-      snackBarOpen: true,
-      snackBarMessage: "Swich to Dashboard"
+      open: false
     });
   showFoo = () =>
     this.setState({ contantStatus: "Black List", show: "foo", open: false });
@@ -162,6 +164,7 @@ class Dashboard extends Component {
   logout = () => {
     console.log("Logouting");
     fire.auth().signOut();
+    this.sendDataToParent("info", "Logged Out!");
   };
   handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -170,11 +173,11 @@ class Dashboard extends Component {
     this.setState({ open: false, snackBarOpen: false });
   };
   init = () => {
-    this.state.uid = fire.auth().onAuthStateChanged(user => {
-      this.state.uid = user.uid;
-      this.state.email = user.email;
-    });
     this.state.name = this.state.email.toUpperCase().substring(0, 1);
+  };
+  sendDataToParent = (type, message) => {
+    this.props.parentCallback(type, message);
+    console.log("Dashboard.js -> Parent");
   };
   //Below is use case of db
   addToDB = () => {

@@ -31,6 +31,7 @@ class Login extends Component {
         });
         this.handleError(error);
       });
+    this.sendDataToParent("success", "Log in Success!");
   };
   handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
@@ -41,6 +42,10 @@ class Login extends Component {
       return;
     }
     this.setState({ open: false, snackBarOpen: false });
+  };
+  sendDataToParent = (type, message) => {
+    this.props.parentCallback(type, message);
+    console.log("Login.js -> Parent");
   };
 
   render() {
