@@ -2,13 +2,15 @@ import React, { Component } from "react";
 import { Link } from "react-dom";
 import fire from "../../config/Fire";
 import "./styles.css";
-import NaviBar from "./NaviBar";
-import DataDisplay from "./dataDisplay";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import BlockIcon from "@material-ui/icons/Block";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import MenuIcon from "@material-ui/icons/Menu";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 import {
@@ -24,7 +26,9 @@ import {
   Menu,
   Toolbar,
   ClickAwayListener,
-  IconButton
+  Avatar,
+  IconButton,
+  Typography
 } from "@material-ui/core";
 
 class Dashboard extends Component {
@@ -33,19 +37,15 @@ class Dashboard extends Component {
     this.addToDB = this.addToDB.bind(this);
     this.clickOnMenu = this.clickOnMenu.bind(this);
     this.state = {
-      contantStatus: "dashboard",
+      contantStatus: "Dashboard",
       open: false,
       show: null,
       user: {},
       uid: "",
       email: "",
-      db: fire.firestore()
+      db: fire.firestore(),
+      name: ""
     };
-    this.state.uid = fire.auth().onAuthStateChanged(user => {
-      this.state.uid = user.uid;
-      this.state.email = user.email;
-      console.log(user);
-    });
   }
 
   // this function will be called by NaviBar
@@ -58,10 +58,17 @@ class Dashboard extends Component {
     // console.log("enter ClickAway");
     // this.setState({ open: false });
   };
-  // DIY here
-  showBar = () => this.setState({ show: "bar", open: false });
-  showFoo = () => this.setState({ show: "foo", open: false });
-  showZee = () => this.setState({ show: "zee", open: false });
+  // DIY Function here
+  showBar = () =>
+    this.setState({ contantStatus: "Dashboard", show: "bar", open: false });
+  showFoo = () =>
+    this.setState({ contantStatus: "Black List", show: "foo", open: false });
+  showZee = () =>
+    this.setState({ contantStatus: "White List", show: "zee", open: false });
+  logout = () => {
+    console.log("Logouting");
+    fire.auth().signOut();
+  };
 
   render() {
     let content = null;
@@ -78,31 +85,69 @@ class Dashboard extends Component {
       default:
         content = <h1>Waiting</h1>;
     }
+    this.state.uid = fire.auth().onAuthStateChanged(user => {
+      this.state.uid = user.uid;
+      this.state.email = user.email;
+      console.log(user);
+    });
+    this.state.name = this.state.email.toUpperCase().substring(0, 1);
     return (
       <div className="Navi">
-        <CssBaseline />
-        <NaviBar
-          containerRef={this.state.email}
-          statusRef={this.state.contantStatus}
-          triggerParentUpdate={this.clickOnMenu}
-        />
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              edge="start"
+              className="menuButton"
+              color="inherit"
+              aria-label="menu"
+            >
+              <MenuIcon Button onClick={this.handleToggle} />
+            </IconButton>
+            <Typography variant="h6" className="title">
+              {this.state.contantStatus}
+            </Typography>
+            <Avatar className="MyAvatar">{this.state.name}</Avatar>
+            <IconButton color="inherit">
+              <ExitToAppIcon onClick={this.logout} />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+
         <Drawer
-          width={250}
+          className="drawerHeader"
           open={this.state.open}
           onRequestChange={open => this.setState({ open })}
         >
           <AppBar title="AppBar" />
-          <IconButton>
-            {""}
-            <ArrowBackIosIcon onClick={this.handleToggle} fontSize="small" />
-          </IconButton>
-
-          <MenuItem onClick={this.showFoo}>ShowFoo</MenuItem>
-          <MenuItem onClick={this.showBar}>ShowBar</MenuItem>
+          <Typography align="right">
+            <IconButton onClick={this.handleToggle}>
+              <ArrowBackIosIcon fontSize="small" />
+            </IconButton>
+          </Typography>
+          <List>
+            <ListItem button onClick={this.showBar}>
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+            <ListItem button onClick={this.showFoo}>
+              <ListItemIcon>
+                <BlockIcon />
+              </ListItemIcon>
+              <ListItemText primary="Black List" />
+            </ListItem>
+            <ListItem button onClick={this.showZee}>
+              <ListItemIcon>
+                <ListAltIcon />
+              </ListItemIcon>
+              <ListItemText primary="White List" />
+            </ListItem>
+          </List>
         </Drawer>
         <Divider />
         {/* below is where dashboard shows */}
-        <Paper zDepth={5}>{content}</Paper>
+        <Paper>{content}</Paper>
       </div>
     );
   }
