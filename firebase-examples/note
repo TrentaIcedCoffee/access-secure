@@ -1,0 +1,5 @@
+set GOOGLE_APPLICATION_CREDENTIALS as environment variable, point to credentials json
+mvn install
+mvn test
+mvn package
+mvn exec:exec -Dfirestore.project.id="logsystem-2ada2"
