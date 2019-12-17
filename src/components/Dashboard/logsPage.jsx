@@ -15,7 +15,7 @@ class LogsPage extends Component {
     this.state.uid = this.props.uid;
     return (
       <Typography>
-        <LogList parentCallback={this.callbackFunction} />
+        {/* <LogList parentCallback={this.callbackFunction} /> */}
       </Typography>
     );
   }

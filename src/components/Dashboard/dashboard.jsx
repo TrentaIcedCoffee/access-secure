@@ -41,7 +41,7 @@ class Dashboard extends Component {
     this.state = {
       contantStatus: "Dashboard",
       snackBarOpen: false,
-      snackBarMessage: "",
+      snackBarMessage: "test",
       snackType: "info",
       open: false,
       show: "dashboard",

@@ -38,8 +38,8 @@ function useLogs() {
 }
 
 function sendDataToParent(type, message) {
-  this.props.parentCallback(type, message);
   console.log("logsPage -> Parent");
+  this.props.parentCallback(type, message);
 }
 const useStyles = makeStyles(theme => ({
   formControl: {
