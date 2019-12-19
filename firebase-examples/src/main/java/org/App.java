@@ -31,15 +31,15 @@ public class App {
         Firestore db = firestoreOptions.getService();
         
         // get all documents in collections
-        // ApiFuture<QuerySnapshot> future = db.collection("users").get();
-        // try {
-        //     List<QueryDocumentSnapshot> documents = future.get().getDocuments();
-        //     for (QueryDocumentSnapshot document : documents) {
-        //         System.out.println(document.getData());
-        //     }
-        // } catch (InterruptedException|ExecutionException e) {
-        //     System.err.println(e);
-        // }
+        ApiFuture<QuerySnapshot> future = db.collection("users").get();
+        try {
+            List<QueryDocumentSnapshot> documents = future.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                System.out.println(document.getData());
+            }
+        } catch (InterruptedException|ExecutionException e) {
+            System.err.println(e);
+        }
         
         // check if collections contain documentId
         // try{
