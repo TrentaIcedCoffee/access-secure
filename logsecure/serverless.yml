@@ -1,0 +1,12 @@
+service: logsecure-dev
+
+provider:
+    name: aws
+    runtime: java8
+
+package:
+    artifact: target/logsecure-dev.jar
+
+functions:
+    echo:
+        handler: org.echo.Handler
