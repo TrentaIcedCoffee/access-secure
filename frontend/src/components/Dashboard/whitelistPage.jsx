@@ -8,7 +8,11 @@ class WhitelistPage extends Component {
   }
 
   render() {
-    return <Button onClick={this.sendDataToParent}>white</Button>;
+    return (
+      <Button onClick={() => this.sendDataToParent("success", "WL")}>
+        white
+      </Button>
+    );
   }
 
   sendDataToParent = (type, message) => {

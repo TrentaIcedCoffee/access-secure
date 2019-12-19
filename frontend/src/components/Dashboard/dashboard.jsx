@@ -136,7 +136,7 @@ class Dashboard extends Component {
         <Divider />
         {/* below is where dashboard shows */}
         <Typography>{content}</Typography>
-        <Snackbar
+        {/* <Snackbar
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           open={this.state.snackBarOpen}
           autoHideDuration={5000}
@@ -147,7 +147,7 @@ class Dashboard extends Component {
             variant={this.state.snackType}
             message={this.state.snackBarMessage}
           />
-        </Snackbar>
+        </Snackbar> */}
       </div>
     );
   }
@@ -161,11 +161,12 @@ class Dashboard extends Component {
   };
   // this function can take data from children
   callbackFunction = (type, message) => {
-    this.setState({
-      snackBarOpen: true,
-      snackBarType: type,
-      snackBarMessage: message
-    });
+    // this.setState({
+    //   snackBarOpen: true,
+    //   snackBarType: type,
+    //   snackBarMessage: message
+    // });
+    this.sendDataToParent(type, message);
   };
   // DIY Function here
   showDashboard = () =>

@@ -9,7 +9,7 @@ class BlacklistPage extends Component {
 
   render() {
     return (
-      <Button onClick={() => this.sendDataToParent("warn", "Success!")}>
+      <Button onClick={() => this.sendDataToParent("success", "Succe!")}>
         test for bl
       </Button>
     );
