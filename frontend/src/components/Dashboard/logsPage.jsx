@@ -15,7 +15,7 @@ class LogsPage extends Component {
     this.state.uid = this.props.uid;
     return (
       <Typography>
-        {/* <LogList parentCallback={this.callbackFunction} /> */}
+        <LogList parentCallback={this.callbackFunction} />
       </Typography>
     );
   }
@@ -32,6 +32,7 @@ class LogsPage extends Component {
   //       });
   //   };
   callbackFunction = (type, message) => {
+    console.log("We Enter logsPage's Callbackfunction");
     this.sendDataToParent(type, message);
   };
   sendDataToParent = (type, message) => {
