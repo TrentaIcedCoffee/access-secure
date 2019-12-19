@@ -28,8 +28,12 @@ class LogList extends Component {
 
   render() {
     //we do list here
+    console.log("outside");
+    console.log(this.state.logs);
     const logList  = this.state.logs.map(log => 
-    <li>{log.ip}</li>);
+    <li>{log.ip}
+    </li>
+    );
     //and render here
     return (
       <div>
@@ -45,11 +49,16 @@ class LogList extends Component {
 
   userLogs = () => {
     var db = fire.firestore();
-    db.collection("logs")
-      //.where("userid","==",this.state.userid)
+    db.collection("apps/fasdfsdf/logs")
+      //.where("token","==","sdfa")
       .get()
       .then(querySnapshot => {
-        const data = querySnapshot.docs.map(doc => doc.data());
+        var Logs=[];
+         const data = querySnapshot.docs.map(function(doc) {
+           var body = doc.data();
+           body["id"] = doc.id;
+           return body
+         });
         console.log("inside");
         console.log(data);
         this.setState({logs:data});
@@ -57,17 +66,28 @@ class LogList extends Component {
   };
   userLogs2 = () => {
     var db = fire.firestore();
-    var Logs = [];
-    db.collection("logs")
+    var Logs=[];
+    var res = db.collection("apps/fasdfsdf/logs")
       //.where("userid","==",this.state.userid)
       .onSnapshot(function(querySnapshot) {
         querySnapshot.forEach(function(log){
-          var map = new Map([["ip",log.data().ip],["userid",log.data().userid]]);
+          // var map = new Map([["email",log.id]]);
+                          // ["ip",log.data().ip],
+                          // ["userid",log.data().userid],
+                          // ["time",log.data().time.toDate()]]);
+          var map = new Map([["map_id", log.id],
+                             ["url", log.url]]);
           Logs.push(map);
         });
+      }, function(error) {
+        console.log(error);
+        console.log("reached error")
+      }, function() {
+        this.setState({logs: Logs});
+        console.log(Logs);
+        console.log("reached success");
       });
-      this.setState({logs:Logs});
-      console.log(this.state.logs);
+    console.log(res);
   };
 
   getUid = () => {
