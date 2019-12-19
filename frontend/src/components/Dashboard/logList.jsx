@@ -17,13 +17,17 @@ import fire from "../../config/Fire";
 class LogList extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      userid:{},
+    };
+
   }
 
   render() {
     var logs = this.userLogs();
+    this.getUid();
     return (
-      <Button onClick={() => this.sendDataToParent("success", "Success!")}>
+      <Button onClick={() => this.userLogs()}>
         test for LogList
       </Button>
     );
@@ -35,7 +39,27 @@ class LogList extends Component {
   };
 
   userLogs = () => {
-    fire.database();
+    var db = fire.firestore();
+    db.collection("logs")
+      .where("userid","==",this.state.userid)
+      .get()
+      .then(querySnapshot => {
+        const data = querySnapshot.docs.map(doc => doc.data());
+        console.log(data);
+        return data;
+      })
+  };
+
+  getUid = () => {
+    fire.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User logged in already or has just logged in.
+        this.state.userid = user.uid;
+        console.log(user.uid);
+      } else {
+        // User not logged in or has just logged out.
+      }
+    });
   };
 }
 export default LogList;
