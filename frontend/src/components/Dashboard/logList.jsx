@@ -17,7 +17,8 @@ import {
   TableHead,
   TableCell,
   TableBody,
-  TableRow
+  TableRow,
+  Dialog
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import fire from "../../config/Fire";
@@ -135,11 +136,38 @@ class LogList extends Component {
   };
 
   getMyTime = data => {
-    return data.getFullYear();
+    return (
+      data.getFullYear() +
+      "-" +
+      data.getMonth() +
+      "-" +
+      data.getDate() +
+      " " +
+      data.getHours() +
+      ":" +
+      data.getMinutes() +
+      ":" +
+      data.getSeconds()
+    );
   };
+
   deleteButtonClick = id => {
-    console.log(id);
-    console.log("Deleted TESt");
+    console.log("Deleted: " + id);
+    this.sendDataToParent("warning", "test");
+    var db = fire.firestore();
+    db.collection("apps")
+      .doc("fasdfsdf") // use AppId here
+      .collection("logs")
+      .doc(id)
+      .delete()
+      .then(function() {
+        console.log("Doc: " + id + " Successfullly deleted!");
+      })
+      .catch(function(error) {
+        console.error("Error removing doc: ", error);
+      });
+    //Because get() is not sync, so we manually refresh it
+    this.userLogs();
   };
 }
 export default LogList;
