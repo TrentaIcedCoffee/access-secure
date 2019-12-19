@@ -1,8 +1,0 @@
-org/logsecure/ApiGatewayResponse.class
-org/logsecure/ApiGatewayResponse$Builder.class
-org/echo/ApiGatewayResponse.class
-org/echo/ApiGatewayResponse$Builder.class
-org/logsecure/Handler.class
-org/echo/Handler.class
-org/logsecure/Response.class
-org/echo/Response.class
