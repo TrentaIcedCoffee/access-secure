@@ -1,18 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import "./styles.css";
 import {
-  Button,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Typography,
-  Divider,
-  Container,
   IconButton,
-  Tooltip,
-  ListItem,
-  List,
   Table,
   TableHead,
   TableCell,
@@ -28,7 +17,8 @@ class LogList extends Component {
     super(props);
     this.state = {
       userid: {},
-      logs: []
+      logs: [],
+      appid: ""
     };
     //init things
     this.getUid();
@@ -99,17 +89,15 @@ class LogList extends Component {
       //.where("userid","==",this.state.userid)
       .onSnapshot(
         function(querySnapshot) {
-          querySnapshot.forEach(function(log) {
-            // var map = new Map([["email",log.id]]);
-            // ["ip",log.data().ip],
-            // ["userid",log.data().userid],
-            // ["time",log.data().time.toDate()]]);
-            var map = new Map([
-              ["map_id", log.id],
-              ["url", log.url]
-            ]);
-            Logs.push(map);
+          const data = querySnapshot.docs.map(function(doc) {
+            var body = doc.data();
+            body["id"] = doc.id;
+            // time is a JS Date Object
+            body["time"] = doc.data().time.toDate();
+            return body;
           });
+          console.log(data);
+          this.setState({ logs: data });
         },
         function(error) {
           console.log(error);
