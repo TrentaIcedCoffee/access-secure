@@ -32,7 +32,7 @@ exports.handler = async (event) => {
         return resOf(400, 'app validation failed');
     }
     
-    return db.collection(`apps/${event.app_id}/whitelist`).doc(event.ip).set({
+    return db.collection(`apps/${event.app_id}/blacklist`).doc(event.ip).set({
         ip: event.ip
     }).then(() => {
         return resOf(200, 'success');
