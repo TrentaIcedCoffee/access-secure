@@ -1,13 +1,16 @@
 import React, { Component, useState, useEffect } from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Button, Typography, Divider,FormControl,InputLabel,Select,MenuItem } from "@material-ui/core";
 import fire from "../../config/Fire";
 import LogList from "./logList";
+import './styles.css';
 class LogsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       db: fire.firestore(),
-      uid: ""
+      uid: "",
+      appid:[],
+      choosenId:"fasdfsdf"
     };
   }
 
@@ -15,7 +18,20 @@ class LogsPage extends Component {
     this.state.uid = this.props.uid;
     return (
       <Typography>
-        <LogList parentCallback={this.callbackFunction} />
+      <FormControl className="formControl2">
+        <InputLabel id="appidChoose">AppID</InputLabel>
+        <Select
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={this.state.choosedId}
+          onChange={this.handleChange}
+        >
+          <MenuItem value="fasdfsdf" >fasdfsdf</MenuItem>
+          <MenuItem value="fasdfsdf2" >fasdfsdf2</MenuItem>
+        </Select>
+      </FormControl>
+        <Divider/>
+        <LogList parentCallback={this.callbackFunction} choosedId={this.state.choosenId}/>
       </Typography>
     );
   }
@@ -39,5 +55,11 @@ class LogsPage extends Component {
     this.props.parentCallback(type, message);
     console.log("logsPage -> Parent");
   };
+  handleChange = ()=>{
+    console.log("we change somehing");
+    this.state.choosenId='fasdfsdf2';
+    console.log(this.state.choosenId);
+    this.forceUpdate();
+  }
 }
 export default LogsPage;

@@ -11,7 +11,8 @@ import {
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import fire from "../../config/Fire";
-
+/// Props: choosedId: appid we should display
+///        parentCallback: pass message to snackbar in parents
 class LogList extends Component {
   constructor(props) {
     super(props);
@@ -61,9 +62,11 @@ class LogList extends Component {
   };
   //("apps/fasdfsdf/logs")
   userLogs = () => {
+    // get app id
+    this.state.appid=this.props.choosedId;
     var db = fire.firestore();
     db.collection("apps")
-      .doc("fasdfsdf") // use AppId here
+      .doc(this.state.appid) // use AppId here
       .collection("logs")
       //.where("token","==","sdfa")
       .get()
@@ -141,10 +144,11 @@ class LogList extends Component {
 
   deleteButtonClick = id => {
     console.log("Deleted: " + id);
+    // TODO: confirm dialog!
     this.sendDataToParent("warning", "test");
     var db = fire.firestore();
     db.collection("apps")
-      .doc("fasdfsdf") // use AppId here
+      .doc(this.state.appid) // use AppId here
       .collection("logs")
       .doc(id)
       .delete()
@@ -154,7 +158,7 @@ class LogList extends Component {
       .catch(function(error) {
         console.error("Error removing doc: ", error);
       });
-    //Because get() is not sync, so we manually refresh it
+    //Because get() is not async, so we manually refresh it
     this.userLogs();
   };
 }
