@@ -1,5 +1,7 @@
 node_modules
 build/
-.jshintrc
-todo
+
+# secrets
 serviceAccountKey.json
+
+todo
