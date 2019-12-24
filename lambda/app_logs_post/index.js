@@ -21,7 +21,8 @@ var resOf = (statusCode, message) => {
 };
 
 exports.handler = async (event) => {
-    let isValidToken = await db.doc(`apps/${event.params.path.app_id}`).get()
+    var appId = event.params.path.app_id;
+    let isValidToken = await db.doc(`apps/${appId}`).get()
         .then(doc => {
             return doc.exists && doc.data().token === event['body-json'].token;
         }).catch(() => {
@@ -35,10 +36,21 @@ exports.handler = async (event) => {
     delete data.token;
     data.timestamp = admin.firestore.Timestamp.now();
     
-    return db.collection(`apps/${event.params.path.app_id}/logs`).add(data)
-        .then((res) => {
-            return resOf(200, 'success');
-        }).catch((err) => {
-            return resOf(500, 'failed');
+    var shouldBlock = await db.collection(`apps/${appId}/logs`)
+        .orderBy('timestamp', 'desc').offset(10).limit(1).get().then(qs => {
+            return qs.docs.length === 1 &&
+                   qs.docs[0].data().timestamp.toMillis() >= data.timestamp.toMillis() - 1000;
         });
+        
+    if (shouldBlock) {
+        // TODO
+    }
+        
+        
+    // return db.collection(`apps/${event.params.path.app_id}/logs`).add(data)
+    //     .then((res) => {
+    //         return resOf(200, 'success');
+    //     }).catch((err) => {
+    //         return resOf(500, 'failed');
+    //     });
 };
