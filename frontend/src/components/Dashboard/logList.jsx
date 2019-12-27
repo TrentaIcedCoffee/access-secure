@@ -31,8 +31,10 @@ class LogList extends Component {
     const logList = this.state.logs.map(log => (
       <TableRow key={log.id} hover={true}>
         <TableCell align="left">{this.getMyTime(log.time)}</TableCell>
+        <TableCell align="left">{log.method}</TableCell>
+        <TableCell align="left">{log.path}</TableCell>
         <TableCell align="left">{log.ip}</TableCell>
-        <TableCell align="left">{log.url}</TableCell>
+        <TableCell align="left">{log.username}</TableCell>
         <TableCell align="right">
           <IconButton onClick={() => this.deleteButtonClick(log.id)}>
             <DeleteIcon color="secondary" />
@@ -47,8 +49,10 @@ class LogList extends Component {
         <TableHead>
           <TableRow>
             <TableCell align="left">Date</TableCell>
+            <TableCell align="left">Method</TableCell>
+            <TableCell align="left">Path</TableCell>
             <TableCell align="left">IP</TableCell>
-            <TableCell align="left">URL</TableCell>
+            <TableCell align="left">Username</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{logList}</TableBody>
@@ -63,7 +67,7 @@ class LogList extends Component {
   //("apps/fasdfsdf/logs")
   userLogs = () => {
     // get app id
-    this.state.appid=this.props.choosedId;
+    this.state.appid = this.props.choosedId;
     var db = fire.firestore();
     db.collection("apps")
       .doc(this.state.appid) // use AppId here
@@ -76,7 +80,8 @@ class LogList extends Component {
           var body = doc.data();
           body["id"] = doc.id;
           // time is a JS Date Object
-          body["time"] = doc.data().time.toDate();
+          body["time"] = doc.data().timestamp.toDate();
+          console.log(body.time);
           return body;
         });
         console.log(data);
@@ -96,7 +101,7 @@ class LogList extends Component {
             var body = doc.data();
             body["id"] = doc.id;
             // time is a JS Date Object
-            body["time"] = doc.data().time.toDate();
+            body["time"] = doc.data().timestamp.toDate();
             return body;
           });
           console.log(data);
