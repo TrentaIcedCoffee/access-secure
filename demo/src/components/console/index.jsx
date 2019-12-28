@@ -13,10 +13,17 @@ class Console extends React.Component {
       user: null
     };
     this.firebase = firebase;
-  };
+    this.firebase.auth().onAuthStateChanged((user) => {
+      this.setState({user: user});
+    });
+  }
   
   render = () => {
-    return this.state.user ? <Account /> : <div></div>;
+    console.log(this.state.user);
+    return this.state.user ? 
+      <div>Logged In</div>
+      : 
+      <Account />;  
   }
 }
 
