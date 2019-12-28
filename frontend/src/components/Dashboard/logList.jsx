@@ -30,9 +30,12 @@ class LogList extends Component {
     //we do list here
     const logList = this.state.logs.map(log => (
       <TableRow key={log.id} hover={true}>
+        <TableCell align="left">{log.id}</TableCell>
         <TableCell align="left">{this.getMyTime(log.time)}</TableCell>
+        <TableCell align="left">{log.method}</TableCell>
+        <TableCell align="left">{log.path}</TableCell>
         <TableCell align="left">{log.ip}</TableCell>
-        <TableCell align="left">{log.url}</TableCell>
+        <TableCell align="left">{log.username}</TableCell>
         <TableCell align="right">
           <IconButton onClick={() => this.deleteButtonClick(log.id)}>
             <DeleteIcon color="secondary" />
@@ -46,9 +49,12 @@ class LogList extends Component {
       <Table>
         <TableHead>
           <TableRow>
+            <TableCell align="left">Id</TableCell>
             <TableCell align="left">Date</TableCell>
+            <TableCell align="left">Method</TableCell>
+            <TableCell align="left">Path</TableCell>
             <TableCell align="left">IP</TableCell>
-            <TableCell align="left">URL</TableCell>
+            <TableCell align="left">Username</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>{logList}</TableBody>
@@ -63,7 +69,7 @@ class LogList extends Component {
   //("apps/fasdfsdf/logs")
   userLogs = () => {
     // get app id
-    this.state.appid=this.props.choosedId;
+    this.state.appid = this.props.choosedId;
     var db = fire.firestore();
     db.collection("apps")
       .doc(this.state.appid) // use AppId here
@@ -76,7 +82,7 @@ class LogList extends Component {
           var body = doc.data();
           body["id"] = doc.id;
           // time is a JS Date Object
-          body["time"] = doc.data().time.toDate();
+          body["time"] = doc.data().timestamp.toDate();
           return body;
         });
         console.log(data);
@@ -96,7 +102,7 @@ class LogList extends Component {
             var body = doc.data();
             body["id"] = doc.id;
             // time is a JS Date Object
-            body["time"] = doc.data().time.toDate();
+            body["time"] = doc.data().timestamp.toDate();
             return body;
           });
           console.log(data);
@@ -143,9 +149,10 @@ class LogList extends Component {
   };
 
   deleteButtonClick = id => {
+    // Trick way to use this in promise.
+    var that = this;
     console.log("Deleted: " + id);
     // TODO: confirm dialog!
-    this.sendDataToParent("warning", "test");
     var db = fire.firestore();
     db.collection("apps")
       .doc(this.state.appid) // use AppId here
@@ -154,9 +161,14 @@ class LogList extends Component {
       .delete()
       .then(function() {
         console.log("Doc: " + id + " Successfullly deleted!");
+        that.sendDataToParent(
+          "success",
+          "Doc: " + id + " Successfullly deleted!"
+        );
       })
       .catch(function(error) {
         console.error("Error removing doc: ", error);
+        that.sendDataToParent("error", "Error removing doc");
       });
     //Because get() is not async, so we manually refresh it
     this.userLogs();
