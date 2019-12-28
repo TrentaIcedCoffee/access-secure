@@ -7,7 +7,12 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-
+    <link rel="stylesheet" href="introduction.css" />
+    <!-- My Font Awesome -->
+    <script
+      src="https://kit.fontawesome.com/d098327332.js"
+      crossorigin="anonymous"
+    ></script>
     <!-- Bootstrap CSS -->
     <link
       rel="stylesheet"
@@ -38,37 +43,46 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
-    <!-- Sidebar -->
-    <div id="wrapper">
-      <div class="overlay">
-        <nav
-          class="navbar navbar-inverse fixed-top"
-          id="sidebar-wrapper"
-          role="navigation"
-        >
-          <ul class="nav sidebar-nav">
-            <div class="sidebar-header">
-              <div class="sidebar-brand">
-                <a href="#">Dashboard</a>
-              </div>
-            </div>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><a href="#team">Team</a></li>
-          </ul>
-        </nav>
-        <!--Sidebar Wrapper -->
-
-        <!-- Page Content-->
-        <div id="page-content-wrapper">
-          <button
-            type="button"
-            class="hamburger animated fadeInLeft is-closed"
-            data-toggle="offcanvas"
-          ></button>
+    <div class="wrapper">
+      <!-- Sidebar -->
+      <nav id="sidebar">
+        <div class="sidebar-header">
+          <h3>Access Secure</h3>
+        </div>
+        <ul class="list-unstyled components">
+          <p>Guide</p>
+          <li class="active">
+            <a
+              href="#homeSubmenu"
+              data-toggle="collapse"
+              aria-expanded="false"
+              class="dropdown-toggle"
+              >Get Started</a
+            >
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+              <li><a href="#">Introduction</a></li>
+              <li><a href="#">How to Use</a></li>
+            </ul>
+          </li>
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Blacklist</a></li>
+          <li><a href="#">Whitelist</a></li>
+        </ul>
+      </nav>
+      <!-- Page Content-->
+      <div id="content">
+        <div class="container-fluid">
+          <button type="button" id="sidebarCollapse" class="btn btn-info">
+            <i class="fas fa-bars"></i>
+          </button>
         </div>
       </div>
     </div>
+
+    <script type="text/javascript">
+      $("#sidebarCollapse").on("click", function() {
+        $("#sidebar").toggleClass("active");
+      });
+    </script>
   </body>
 </html>
