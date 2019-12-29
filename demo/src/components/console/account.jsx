@@ -26,16 +26,39 @@ class Account extends React.Component {
       this.setState({
         msgs: this.state.msgs.splice(1, this.state.msgs.length-1)
       });
-    }, 0)});
+    }, 1000)});
   }
   
   onInputChange = (e) => {
     this.setState({[e.target.id]: e.target.value});
-    console.log(this.state);
+  }
+  
+  isValidForm = () => {
+    const {email, password, passwordRetype} = this.state;
+    if (email === '') {
+      this.appendMsgs('email required');
+    } else if (!email.includes('@')) {
+      this.appendMsgs('email bad format');
+    }
+    if (password === '') {
+      this.appendMsgs('password required');
+    }
+    if (this.state.isRegister) {
+      if (password !== passwordRetype) {
+        this.appendMsgs('passwords not match');
+      }
+      return email.includes('@') && email !== '' && password !== '' && 
+        passwordRetype !== '' && password === passwordRetype;
+    } else {
+      return email.includes('@') && email !== '' && password !== '';
+    }
   }
   
   onFormSubmit = () => {
-    const {email, password, passwordRetype} = this.state;
+    const {email, password} = this.state;
+    if (!this.isValidForm()) {
+      return
+    }
     if (this.state.isRegister) {
       this.props.firebase.auth()
         .createUserWithEmailAndPassword(email, password)
@@ -69,7 +92,6 @@ class Account extends React.Component {
             placeholder="Enter email"
             value={this.state.email}
             onChange={this.onInputChange}
-            required
           />
         </Form.Group>
         <Form.Group controlId="password">
@@ -79,7 +101,6 @@ class Account extends React.Component {
             placeholder="Password"
             value={this.state.password}
             onChange={this.onInputChange}
-            required
           />
         </Form.Group>
         {this.state.isRegister &&
@@ -90,7 +111,6 @@ class Account extends React.Component {
               placeholder="Retype Password"
               value={this.state.passwordRetype}
               onChange={this.onInputChange}
-              required
             />
           </Form.Group>
         }
