@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Modal, Form, Alert } from 'react-bootstrap';
 
-import firebase from './firebase/';
+import {auth, db} from './firebase/';
 import Account from './account';
-import UI from './ui';
+import Cards from './cards';
 
 import './styles.sass';
 
@@ -13,17 +13,17 @@ class Console extends React.Component {
     this.state = {
       user: null
     };
-    this.firebase = firebase;
-    this.firebase.auth().onAuthStateChanged((user) => {
+    this.auth = auth;
+    auth.onAuthStateChanged((user) => {
       this.setState({user: user});
     });
   }
   
   render = () => {
     return this.state.user ? 
-      <UI firebase={this.firebase} />
+      <Cards auth={auth} db={db} />
       : 
-      <Account firebase={this.firebase} />;  
+      <Account auth={auth} />;  
   }
 }
 

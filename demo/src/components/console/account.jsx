@@ -17,7 +17,7 @@ class Account extends React.Component {
   }
   
   /* FROM PARENT
-    firebase
+    auth
   */
   
   appendMsgs = (msg) => {
@@ -61,14 +61,14 @@ class Account extends React.Component {
       return
     }
     if (this.state.isRegister) {
-      this.props.firebase.auth()
+      this.props.auth
         .createUserWithEmailAndPassword(email, password)
         .then(() => {})
         .catch(err => {
           this.appendMsgs(err.message);
         });
     } else {
-      this.props.firebase.auth()
+      this.props.auth
         .signInWithEmailAndPassword(email, password)
         .then(() => {})
         .catch(err => {
