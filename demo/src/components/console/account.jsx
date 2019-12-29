@@ -91,7 +91,7 @@ class Account extends React.Component {
           <img
             className="logo"
             src={this.state.isRegister ? logoRegister : logoLogin}
-            alt="Logo"
+            alt={this.state.isRegister ? "Register Logo" : "Login Logo"}
           />
           <Form>
             <Form.Group controlId="email">
@@ -141,10 +141,12 @@ class Account extends React.Component {
                 To register
               </Button>
             }
+          </Form>
+          <div className="errs">
             {this.state.msgs.map(((msg, idx) => (
               <Alert key={idx} variant="danger">{msg}</Alert>
             )))}
-          </Form>
+          </div>
         </div>
       </div>
     ); 
