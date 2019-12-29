@@ -14,6 +14,7 @@ class Console extends React.Component {
       user: null
     };
     this.auth = auth;
+    this.db = db;
     auth.onAuthStateChanged((user) => {
       this.setState({user: user});
     });
@@ -21,7 +22,7 @@ class Console extends React.Component {
   
   render = () => {
     return this.state.user ? 
-      <Cards auth={auth} db={db} />
+      <Cards user={this.state.user} db={this.db} auth={this.auth} />
       : 
       <Account auth={auth} />;  
   }
