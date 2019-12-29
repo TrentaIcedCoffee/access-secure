@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import logologin from "../logos/login_logo.png"
-import loginregister from "../logos/register_logo.png"
+import logoLogin from './assets/login_logo.png';
+import logoRegister from './assets/register_logo.png';
 
 import './styles.sass';
 
@@ -13,7 +13,7 @@ class Account extends React.Component {
       password: '',
       passwordRetype: '',
       isRegister: false,
-      msgs: [],
+      msgs: []
     };
   }
   
@@ -59,7 +59,7 @@ class Account extends React.Component {
   onFormSubmit = () => {
     const {email, password} = this.state;
     if (!this.isValidForm()) {
-      return
+      return;
     }
     if (this.state.isRegister) {
       this.props.auth
@@ -86,66 +86,67 @@ class Account extends React.Component {
   
   render = () => {
     return (
-      <div className="account-page">
-      <Form className="account">
-        <div className="account-header">
-        <Form.Group controlId="Logo">
-          <img src={this.state.isRegister? loginregister : logologin} className="img-fluid" alt="Logo image" className="logo"/>
-        </Form.Group>
-        </div>
-        <div className="account-content">
-        <Form.Group controlId="email" className="mtext">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={this.state.email}
-            onChange={this.onInputChange}
+      <div className="page">
+        <div className="card">
+          <img
+            className="logo"
+            src={this.state.isRegister ? logoRegister : logoLogin}
+            alt="Logo"
           />
-        </Form.Group>
-        <Form.Group controlId="password" className="mtext">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.onInputChange}
-          />
-        </Form.Group>
-        {this.state.isRegister &&
-          <Form.Group controlId="passwordRetype" className="mtext">
-            <Form.Label>Retype Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Retype Password"
-              value={this.state.passwordRetype}
-              onChange={this.onInputChange}
-            />
-          </Form.Group>
-        }
-        <Button variant="primary" onClick={() => this.onFormSubmit()}>
-          {this.state.isRegister ? "Register" : "Login"}
-        </Button>
-        {this.state.isRegister ? 
-          <Button
-            variant="link"
-            onClick={() => this.setState({isRegister: false})}
-          >
-            To Login
-          </Button>
-          :
-          <Button
-            variant="link"
-            onClick={() => this.setState({isRegister: true})}
-          >
-            To register
-          </Button>
-        }
-        {this.state.msgs.map(((msg, idx) => (
-          <Alert key={idx} variant="danger">{msg}</Alert>
-        )))}
+          <Form>
+            <Form.Group controlId="email">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={this.state.email}
+                onChange={this.onInputChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="password">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={this.state.password}
+                onChange={this.onInputChange}
+              />
+            </Form.Group>
+            {this.state.isRegister &&
+              <Form.Group controlId="passwordRetype">
+                <Form.Label>Retype Password</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Retype Password"
+                  value={this.state.passwordRetype}
+                  onChange={this.onInputChange}
+                />
+              </Form.Group>
+            }
+            <Button variant="primary" onClick={() => this.onFormSubmit()}>
+              {this.state.isRegister ? "Register" : "Login"}
+            </Button>
+            {this.state.isRegister ? 
+              <Button
+                variant="link"
+                onClick={() => this.setState({isRegister: false})}
+              >
+                To Login
+              </Button>
+              :
+              <Button
+                variant="link"
+                onClick={() => this.setState({isRegister: true})}
+              >
+                To register
+              </Button>
+            }
+            {this.state.msgs.map(((msg, idx) => (
+              <Alert key={idx} variant="danger">{msg}</Alert>
+            )))}
+          </Form>
         </div>
-      </Form></div>
+      </div>
     ); 
   }
   

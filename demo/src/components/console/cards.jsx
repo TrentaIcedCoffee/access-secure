@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 
 class Cards extends React.Component {
   

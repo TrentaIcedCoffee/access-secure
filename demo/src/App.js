@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import Welcome from './components/welcome/';
 import Console from './components/console/';
 
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component {
   render = () => {
