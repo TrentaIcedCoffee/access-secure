@@ -3,6 +3,7 @@ import { Button, Modal, Form, Alert } from 'react-bootstrap';
 
 import firebase from './firebase/';
 import Account from './account';
+import UI from './ui';
 
 import './styles.sass';
 
@@ -20,7 +21,7 @@ class Console extends React.Component {
   
   render = () => {
     return this.state.user ? 
-      <div>Logged In</div>
+      <UI firebase={this.firebase} />
       : 
       <Account firebase={this.firebase} />;  
   }

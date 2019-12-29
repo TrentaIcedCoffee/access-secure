@@ -26,7 +26,7 @@ class Account extends React.Component {
       this.setState({
         msgs: this.state.msgs.splice(1, this.state.msgs.length-1)
       });
-    }, 1000)});
+    }, 0)});
   }
   
   onInputChange = (e) => {
@@ -54,7 +54,7 @@ class Account extends React.Component {
   
   onRmMsg = (msgToRm) => {
     this.setState({
-      msgs: new Set([...this.state.msgs].filter(msg => msg !== msgToRm))
+      msgs: this.state.msgs.filter(msg => msg !== msgToRm)
     });
   } 
   
