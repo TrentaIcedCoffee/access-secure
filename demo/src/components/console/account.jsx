@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import logologin from "./logos/login_logo.png"
-import loginregister from "./logos/register_logo.png"
+import logologin from "../logos/login_logo.png"
+import loginregister from "../logos/register_logo.png"
 
 import './styles.sass';
 
