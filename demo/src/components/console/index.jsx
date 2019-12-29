@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Modal, Form, Alert } from 'react-bootstrap';
 
 import {auth, db} from './firebase/';
 import Account from './account/';
-import Cards from './cards';
+import Cards from './cards/';
+import Navbar from './navbar';
 
 import './styles.sass';
 
@@ -21,10 +21,16 @@ class Console extends React.Component {
   }
   
   render = () => {
-    return this.state.user ? 
-      <Cards user={this.state.user} db={this.db} auth={this.auth} />
-      : 
-      <Account auth={auth} />;  
+    return (
+      <div>
+        <Navbar user={this.state.user} auth={this.auth} />
+        {this.state.user ? 
+          <Cards user={this.state.user} db={this.db} auth={this.auth} />
+          :
+          <Account auth={auth} />
+        }
+      </div>
+    );
   }
 }
 

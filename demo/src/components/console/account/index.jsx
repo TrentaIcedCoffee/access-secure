@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import logoLogin from './assets/login_logo.png';
-import logoRegister from './assets/register_logo.png';
 
 import './styles.sass';
+import logoLogin from './assets/login_logo.png';
+import logoRegister from './assets/register_logo.png';
 
 class Account extends React.Component {
   constructor(props) {

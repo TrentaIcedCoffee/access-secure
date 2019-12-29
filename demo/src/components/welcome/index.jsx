@@ -7,7 +7,7 @@ import './styles.sass';
 class Welcome extends React.Component {
   render() {
     return (
-      <Navbar/>
+      <Navbar />
     );
   }
 }
