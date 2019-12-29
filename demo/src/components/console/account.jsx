@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
+import logo from "./logos/login_logo.png"
 
 import './styles.sass';
 
@@ -85,7 +86,10 @@ class Account extends React.Component {
   render = () => {
     return (
       <Form className="account">
-        <Form.Group controlId="email">
+        <Form.Group controlId="Logo">
+          <img src={logo} class="img-fluid" alt="Logo image" className="logo"/>
+        </Form.Group>
+        <Form.Group controlId="email" className="text">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -94,7 +98,7 @@ class Account extends React.Component {
             onChange={this.onInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="password">
+        <Form.Group controlId="password" className="text">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -104,7 +108,7 @@ class Account extends React.Component {
           />
         </Form.Group>
         {this.state.isRegister &&
-          <Form.Group controlId="passwordRetype">
+          <Form.Group controlId="passwordRetype" className="text">
             <Form.Label>Retype Password</Form.Label>
             <Form.Control
               type="password"
