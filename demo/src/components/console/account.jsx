@@ -31,6 +31,7 @@ class Account extends React.Component {
   
   onInputChange = (e) => {
     this.setState({[e.target.id]: e.target.value});
+    console.log(this.state);
   }
   
   onFormSubmit = () => {
@@ -63,31 +64,55 @@ class Account extends React.Component {
       <Form className="account">
         <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" onChange={this.onInputChange} required />
+          <Form.Control
+            type="email"
+            placeholder="Enter email"
+            value={this.state.email}
+            onChange={this.onInputChange}
+            required
+          />
         </Form.Group>
         <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" onChange={this.onInputChange} required />
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            value={this.state.password}
+            onChange={this.onInputChange}
+            required
+          />
         </Form.Group>
         {this.state.isRegister &&
           <Form.Group controlId="passwordRetype">
             <Form.Label>Retype Password</Form.Label>
-            <Form.Control type="password" placeholder="Retype Password" onChange={this.onInputChange} required />
+            <Form.Control
+              type="password"
+              placeholder="Retype Password"
+              value={this.state.passwordRetype}
+              onChange={this.onInputChange}
+              required
+            />
           </Form.Group>
         }
         <Button variant="primary" onClick={() => this.onFormSubmit()}>
           {this.state.isRegister ? "Register" : "Login"}
         </Button>
         {this.state.isRegister ? 
-          <Button variant="link" onClick={() => this.setState({isRegister: false})}>
+          <Button
+            variant="link"
+            onClick={() => this.setState({isRegister: false})}
+          >
             To Login
           </Button>
           :
-          <Button variant="link" onClick={() => this.setState({isRegister: true})}>
+          <Button
+            variant="link"
+            onClick={() => this.setState({isRegister: true})}
+          >
             To register
           </Button>
         }
-        {[...this.state.msgs].map(((msg, idx) => (
+        {this.state.msgs.map(((msg, idx) => (
           <Alert key={idx} variant="danger">{msg}</Alert>
         )))}
       </Form>
