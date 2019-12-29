@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Form, Alert } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 
 import './styles.sass';
 
@@ -10,31 +10,86 @@ class Account extends React.Component {
       email: '',
       password: '',
       passwordRetype: '',
-      isRegister: true,
-      msgs: new Set()
+      isRegister: false,
+      msgs: []
     };
-  };
+  }
+  
+  /* FROM PARENT
+    firebase
+  */
+  
+  appendMsgs = (msg) => {
+    this.setState({
+      msgs: this.state.msgs.concat(msg)
+    }, () => {setTimeout(() => {
+      this.setState({
+        msgs: this.state.msgs.splice(1, this.state.msgs.length-1)
+      });
+    }, 1000)});
+  }
+  
+  onInputChange = (e) => {
+    this.setState({[e.target.id]: e.target.value});
+  }
+  
+  onFormSubmit = () => {
+    const {email, password, passwordRetype} = this.state;
+    if (this.state.isRegister) {
+      this.props.firebase.auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {})
+        .catch(err => {
+          this.appendMsgs(err.message);
+        });
+    } else {
+      this.props.firebase.auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {})
+        .catch(err => {
+          this.appendMsgs(err.message);
+        });
+    }
+  }
+  
+  onRmMsg = (msgToRm) => {
+    this.setState({
+      msgs: new Set([...this.state.msgs].filter(msg => msg !== msgToRm))
+    });
+  } 
   
   render = () => {
     return (
       <Form className="account">
         <Form.Group controlId="email">
           <Form.Label>Email address</Form.Label>
-          <Form.Control type="email" placeholder="Enter email" required />
+          <Form.Control type="email" placeholder="Enter email" onChange={this.onInputChange} required />
         </Form.Group>
         <Form.Group controlId="password">
           <Form.Label>Password</Form.Label>
-          <Form.Control type="password" placeholder="Password" required />
+          <Form.Control type="password" placeholder="Password" onChange={this.onInputChange} required />
         </Form.Group>
         {this.state.isRegister &&
           <Form.Group controlId="passwordRetype">
             <Form.Label>Retype Password</Form.Label>
-            <Form.Control type="password" placeholder="Retype Password" required />
+            <Form.Control type="password" placeholder="Retype Password" onChange={this.onInputChange} required />
           </Form.Group>
         }
-        <Button variant="primary" type="submit">
-          Submit
+        <Button variant="primary" onClick={() => this.onFormSubmit()}>
+          {this.state.isRegister ? "Register" : "Login"}
         </Button>
+        {this.state.isRegister ? 
+          <Button variant="link" onClick={() => this.setState({isRegister: false})}>
+            To Login
+          </Button>
+          :
+          <Button variant="link" onClick={() => this.setState({isRegister: true})}>
+            To register
+          </Button>
+        }
+        {[...this.state.msgs].map(((msg, idx) => (
+          <Alert key={idx} variant="danger">{msg}</Alert>
+        )))}
       </Form>
     ); 
   }

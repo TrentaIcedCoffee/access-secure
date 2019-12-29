@@ -19,11 +19,10 @@ class Console extends React.Component {
   }
   
   render = () => {
-    console.log(this.state.user);
     return this.state.user ? 
       <div>Logged In</div>
       : 
-      <Account />;  
+      <Account firebase={this.firebase} />;  
   }
 }
 
