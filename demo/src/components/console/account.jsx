@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Form, Alert } from 'react-bootstrap';
-import logo from "./logos/login_logo.png"
+import logologin from "./logos/login_logo.png"
+import loginregister from "./logos/register_logo.png"
 
 import './styles.sass';
 
@@ -12,7 +13,7 @@ class Account extends React.Component {
       password: '',
       passwordRetype: '',
       isRegister: false,
-      msgs: []
+      msgs: [],
     };
   }
   
@@ -85,11 +86,15 @@ class Account extends React.Component {
   
   render = () => {
     return (
+      <div className="account-page">
       <Form className="account">
+        <div className="account-header">
         <Form.Group controlId="Logo">
-          <img src={logo} class="img-fluid" alt="Logo image" className="logo"/>
+          <img src={this.state.isRegister? loginregister : logologin} className="img-fluid" alt="Logo image" className="logo"/>
         </Form.Group>
-        <Form.Group controlId="email" className="text">
+        </div>
+        <div className="account-content">
+        <Form.Group controlId="email" className="mtext">
           <Form.Label>Email address</Form.Label>
           <Form.Control
             type="email"
@@ -98,7 +103,7 @@ class Account extends React.Component {
             onChange={this.onInputChange}
           />
         </Form.Group>
-        <Form.Group controlId="password" className="text">
+        <Form.Group controlId="password" className="mtext">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -108,7 +113,7 @@ class Account extends React.Component {
           />
         </Form.Group>
         {this.state.isRegister &&
-          <Form.Group controlId="passwordRetype" className="text">
+          <Form.Group controlId="passwordRetype" className="mtext">
             <Form.Label>Retype Password</Form.Label>
             <Form.Control
               type="password"
@@ -139,7 +144,8 @@ class Account extends React.Component {
         {this.state.msgs.map(((msg, idx) => (
           <Alert key={idx} variant="danger">{msg}</Alert>
         )))}
-      </Form>
+        </div>
+      </Form></div>
     ); 
   }
   
