@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Form, Alert } from 'react-bootstrap';
 
 import {auth, db} from './firebase/';
-import Account from './account';
+import Account from './account/';
 import Cards from './cards';
 
 import './styles.sass';
