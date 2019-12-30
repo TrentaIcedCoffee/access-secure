@@ -24,14 +24,10 @@ class Console extends React.Component {
     return (
       <div>
         <div className="cardPagePhoto">
-          <img className="leftPhoto" src={greytintLogo} alt="greyLogo" />
-          <img className="rightPhoto" src={greyGear} alt="greyGear" />
-          {user ? (
-            <Cards db={db} user={user} />
-          ) : (
-            <Account db={db} auth={auth} />
-          )}
+          {/* <img className="leftPhoto" src={greytintLogo} alt="greyLogo" /> */}
+          {/* <img className="rightPhoto" src={greyGear} alt="greyGear" /> */}
         </div>
+        {user ? <Cards db={db} user={user} /> : <Account db={db} auth={auth} />}
       </div>
     );
   };
