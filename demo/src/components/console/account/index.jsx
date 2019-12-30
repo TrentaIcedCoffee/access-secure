@@ -78,12 +78,6 @@ class Account extends React.Component {
     }
   }
   
-  onRmMsg = (msgToRm) => {
-    this.setState({
-      msgs: this.state.msgs.filter(msg => msg !== msgToRm)
-    });
-  } 
-  
   render = () => {
     return (
       <div className="page">
