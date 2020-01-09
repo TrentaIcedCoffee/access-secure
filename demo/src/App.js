@@ -42,8 +42,8 @@ class App extends React.Component {
               {...props} user={user} auth={auth} db={db} 
               syncRouteCallback={() => syncRoute('console')}
             />} />
-            <Route path='/console/:appId' exact render={(props) => <Dashboard 
-              {...props} user={user} db={db} 
+            <Route path='/console/apps/:appId' exact render={(props) => 
+              <Dashboard {...props} user={user} db={db} 
               syncRouteCallback={() => syncRoute('dashboard')}
             />} />
           </Switch>

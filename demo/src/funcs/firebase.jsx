@@ -17,7 +17,5 @@ const firebase = app.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-console.error('see this once -> ok, twice -> not ok'); //TODO
-
 export default firebase;
 export { auth, db };
