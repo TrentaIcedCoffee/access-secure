@@ -1,4 +1,0 @@
-alias new="/home/ubuntu/environment/logsecure/scripts/new_function.sh"
-alias debug="node debug.js"
-alias style="/home/ubuntu/environment/logsecure/scripts/style.sh"
-alias deploy="/home/ubuntu/environment/logsecure/scripts/deploy.sh"

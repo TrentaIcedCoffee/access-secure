@@ -1,7 +1,0 @@
-node_modules
-build/
-
-# secrets
-serviceAccountKey.json
-
-todo/
