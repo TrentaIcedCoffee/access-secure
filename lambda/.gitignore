@@ -3,5 +3,10 @@ build/
 coverage/
 .nyc_output/
 
+!.gitignore
+!.eslintrc
+!.eslintignore
+!.nycrc.json
+
 # secrets
 serviceAccountKey.json
