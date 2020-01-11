@@ -5,11 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/*",
-    "lint": "eslint funcs/* tests/*",
+    "lint": "eslint .",
     "coverage": "nyc npm run test",
     "showcoverage": "nyc report --reporter=html && serve ./coverage"
   },
-  "author": "",
   "license": "ISC",
   "devDependencies": {
     "chai": "^4.2.0",

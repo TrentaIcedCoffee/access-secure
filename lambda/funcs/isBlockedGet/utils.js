@@ -1,5 +1,7 @@
 'use strict';
 
+const _ = require('lodash');
+
 class UserError extends Error {
   constructor(msg, statusCode) {
     super(msg);
@@ -15,24 +17,22 @@ const errorOf = (statusCode, message) => {
   };
 };
 
-const isLegitString = s => typeof s === 'string' && s.length > 0;
-
 const parseInput = async (event, keyStr) => {
   const
     keys = keyStr.split(','),
     missings = [],
     conflicts = [],
     res = {};
-  
+
   keys.forEach(key => {
     const lst = [
       event.queryParams[key],
       event.pathParams[key],
       event.headers[key],
-      event.body[key]
-    ].filter(isLegitString);
+      event.body[key],
+    ].filter(val => !_.isEmpty(val));
     if (lst.length > 1) conflicts.push(key);
-    else if (lst.length == 0) missings.push(key);
+    else if (lst.length === 0) missings.push(key);
     else res[key] = lst[0];
   });
 
@@ -53,24 +53,21 @@ admin.initializeApp({
 const db = admin.firestore();
 
 const auth = async (db, appId, token) => {
-  return new Promise((resolve, reject) => {
-    db.collection('apps').doc(appId).get()
-      .then(doc => {
-        if (doc.exists && doc.data().token === token) resolve();
-        reject(new UserError('app token not match'));
-      });
-  });
+  await db.collection('apps').doc(appId).get()
+    .then(doc => {
+      if (doc.exists && doc.data().token === token) return;
+      throw new UserError('app token not match');
+    });
 };
 
 const Timestamp = admin.firestore.Timestamp;
 
 const isBlocked = async (db, appId, ip) => {
-  const inWhitelist = await db.doc(`apps/${appId}/whitelist/${ip}`).get()
-    .then(doc => doc.exists);
-  if (inWhitelist) return false;
-  const inBlacklist = await db.doc(`apps/${appId}/blacklist/${ip}`).get()
-    .then(doc => doc.exists);
-  return inBlacklist;
+  const res = await Promise.all([
+    db.doc(`apps/${appId}/whitelist/${ip}`).get().then(doc => doc.exists),
+    db.doc(`apps/${appId}/blacklist/${ip}`).get().then(doc => doc.exists),
+  ]);
+  return !res[0] && res[1];
 };
 
 module.exports = {
