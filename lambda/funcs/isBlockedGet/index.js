@@ -9,7 +9,7 @@ const {
   isBlocked,
 } = require('./utils');
 
-exports.handler = async (event) => {
+exports.handler = async event => {
   try {
     const {
       appId,
@@ -20,7 +20,7 @@ exports.handler = async (event) => {
       throw new UserError('invalid authorization format', 401);
     }
     const token = Authorization.substr(6);
-    
+
     await auth(db, appId, token);
     const resBlocked = await isBlocked(db, appId, ip);
     return {

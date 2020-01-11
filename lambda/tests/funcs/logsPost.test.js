@@ -20,19 +20,19 @@ describe('#logsPost', () => {
     appId = 'test',
     token = 'token',
     ip = '0.0.0.0';
-  
+
   before(() => {
     return db.collection('apps').doc('test').set({
-      token: 'token'
+      token: 'token',
     });
   });
-  
+
   after(() => {
     return db.collection('apps').doc('test').delete();
   });
-  
+
   it('should return 200 with posted id', () => {
-    const event =  eventOf(`Basic ${token}`, appId, { ip });
+    const event = eventOf(`Basic ${token}`, appId, { ip });
     return handler(event).then(res => {
       res.statusCode.should.be.equal(200);
       res.body.message.should.be.an('string').and.satisfy(
@@ -40,7 +40,7 @@ describe('#logsPost', () => {
       );
     });
   });
-  
+
   it('should return 401 for Bad Auth format', () => {
     const event = eventOf(`Bearer ${token}`, appId, { ip });
     return handler(event).then(res => {

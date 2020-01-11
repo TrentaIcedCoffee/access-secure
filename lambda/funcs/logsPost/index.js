@@ -24,7 +24,7 @@ exports.handler = async event => {
     return {
       statusCode: 200,
       body: {
-        message: `log posted with id: ${doc.id}`
+        message: `log posted with id: ${doc.id}`,
       },
     };
   } catch (err) {
