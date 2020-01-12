@@ -15,12 +15,10 @@ exports.handler = async event => {
       Authorization,
       log,
     } = await parseInput(event, 'appId,Authorization,log');
-    if (!Authorization.startsWith('Basic ')) {
-      throw new UserError('invalid authorization format', 401);
-    }
-    const token = Authorization.substr(6);
-    await auth(db, appId, token);
-    const doc = await db.collection(`apps/${appId}/logs`).add(log);
+    
+    const doc = await auth(db, appId, Authorization)
+      .then(() => db.collection(`apps/${appId}/logs`).add(log));
+      
     return {
       statusCode: 200,
       body: {

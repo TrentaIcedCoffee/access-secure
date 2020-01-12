@@ -45,7 +45,7 @@ describe('#logsPost', () => {
     const event = eventOf(`Bearer ${token}`, appId, { ip });
     return handler(event).then(res => {
       res.statusCode.should.be.equal(401);
-      res.body.message.should.be.equal('invalid authorization format');
+      res.body.message.should.be.equal('Authorization invalid format (401)');
     });
   });
 });

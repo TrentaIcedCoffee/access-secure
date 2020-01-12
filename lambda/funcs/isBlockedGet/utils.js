@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 class UserError extends Error {
   constructor(msg, statusCode) {
-    super(msg);
+    super(`${msg} (${statusCode})`);
     this.statusCode = statusCode;
     this.name = this.constructor.name;
   }
@@ -52,11 +52,15 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-const auth = async (db, appId, token) => {
+const auth = async (db, appId, Authorization) => {
+  if (!_.isString(Authorization) || !Authorization.startsWith('Basic ')) {
+    throw new UserError('Authorization invalid format', 401);
+  }
+  const token = Authorization.substr('Basic '.length);
   await db.collection('apps').doc(appId).get()
     .then(doc => {
       if (doc.exists && doc.data().token === token) return;
-      throw new UserError('app token not match');
+      throw new UserError('app token not match', 401);
     });
 };
 

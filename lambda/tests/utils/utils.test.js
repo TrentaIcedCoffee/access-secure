@@ -55,7 +55,7 @@ describe('#parseInput', () => {
     return parseInput(event, 'errHeader,errPath,errQuery,errBody')
       .should.be.rejectedWith(
         UserError,
-        'missings: errHeader,errPath,errQuery,errBody'
+        'missings: errHeader,errPath,errQuery,errBody (400)'
       );
   });
 
@@ -63,7 +63,7 @@ describe('#parseInput', () => {
     return parseInput(eventConflict, 'appId')
       .should.be.rejectedWith(
         UserError,
-        'conflicts: appId'
+        'conflicts: appId (400)'
       );
   });
 });
@@ -83,11 +83,12 @@ describe('#db', () => {
   const
     appId = 'test',
     token = 'token',
-    threshold = 5,
-    errorToken = 'errorToken';
+    Authorization = 'Basic token',
+    AuthorizationErrformat = 'Bearer token',
+    AuthorizationErrtoken = 'Basic wrongToken'; 
 
   before(() => {
-    return db.collection('apps').doc(appId).set({ token, threshold });
+    return db.collection('apps').doc(appId).set({ token });
   });
 
   after(() => {
@@ -96,12 +97,23 @@ describe('#db', () => {
 
   describe('#auth', () => {
     it('should be fulfilled', () => {
-      return auth(db, appId, token).should.be.fulfilled;
+      return auth(db, appId, Authorization).should.be.fulfilled;
     });
 
-    it('should throw error invalid token', () => {
-      return auth(db, appId, errorToken)
-        .should.be.rejectedWith(UserError, 'app token not match');
+    it('should throw Authorization invalid format', () => {
+      return auth(db, appId, AuthorizationErrformat)
+        .should.be.rejectedWith(
+          UserError,
+          'Authorization invalid format (401)',
+        );
+    });
+    
+    it('should throw token not match', () => {
+      return auth(db, appId, AuthorizationErrtoken)
+        .should.be.rejectedWith(
+          UserError,
+          'app token not match (401)',
+        );
     });
   });
 
