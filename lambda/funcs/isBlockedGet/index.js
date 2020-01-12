@@ -19,7 +19,7 @@ exports.handler = async event => {
 
     const resBlocked = await auth(db, appId, Authorization).
       then(() => isBlocked(db, appId, ip));
-      
+
     return {
       statusCode: 200,
       body: {
@@ -27,7 +27,9 @@ exports.handler = async event => {
       },
     };
   } catch (err) {
+    /* istanbul ignore else */
     if (err instanceof UserError) return errorOf(err.statusCode, err.message);
+    /* istanbul ignore next */
     return errorOf(500, process.env.DEV === 'true' ? err.message : 'Internal Server Error');
   }
 };

@@ -15,10 +15,10 @@ exports.handler = async event => {
       Authorization,
       log,
     } = await parseInput(event, 'appId,Authorization,log');
-    
+
     const doc = await auth(db, appId, Authorization)
       .then(() => db.collection(`apps/${appId}/logs`).add(log));
-      
+
     return {
       statusCode: 200,
       body: {
@@ -28,7 +28,7 @@ exports.handler = async event => {
   } catch (err) {
     /* istanbul ignore else */
     if (err instanceof UserError) return errorOf(err.statusCode, err.message);
-    /* istanbul ignore next  */
+    /* istanbul ignore next */
     return errorOf(500, process.env.DEV === 'true' ? err.message : 'Internal Server Error');
   }
 };

@@ -85,7 +85,7 @@ describe('#db', () => {
     token = 'token',
     Authorization = 'Basic token',
     AuthorizationErrformat = 'Bearer token',
-    AuthorizationErrtoken = 'Basic wrongToken'; 
+    AuthorizationErrtoken = 'Basic wrongToken';
 
   before(() => {
     return db.collection('apps').doc(appId).set({ token });
@@ -104,15 +104,15 @@ describe('#db', () => {
       return auth(db, appId, AuthorizationErrformat)
         .should.be.rejectedWith(
           UserError,
-          'Authorization invalid format (401)',
+          'Authorization invalid format (401)'
         );
     });
-    
+
     it('should throw token not match', () => {
       return auth(db, appId, AuthorizationErrtoken)
         .should.be.rejectedWith(
           UserError,
-          'app token not match (401)',
+          'app token not match (401)'
         );
     });
   });
