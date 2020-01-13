@@ -4,7 +4,7 @@ const chai = require('chai');
 chai.should();
 chai.use(require('chai-as-promised'));
 
-const { db } = require('../../funcs/isBlockedGet/utils');
+const { db, deleteDoc } = require('../../utils/utils');
 const handler = require('../../funcs/isBlockedGet/').handler;
 
 describe('#isBlockedGet', () => {
@@ -23,20 +23,15 @@ describe('#isBlockedGet', () => {
     ip = '0.0.0.0',
     ipBlocked = '0.0.0.1';
 
-  const
-    DEV = process.env.DEV;
-
   before(() => {
-    process.env.DEV = 'true';
-    return db.collection('apps').doc(appId).set({ token })
-      .then(_ => db.collection(`apps/${appId}/blacklist`)
-        .doc(ipBlocked).set({})
-      );
+    return db.doc(`apps/${appId}`).set({ token })
+      .then(_ => {
+        return db.collection(`apps/${appId}/blacklist`).doc(ipBlocked).set({});
+      });
   });
 
   after(() => {
-    process.env.DEV = DEV;
-    return db.collection('apps').doc(appId).delete();
+    return deleteDoc(db, `apps/${appId}`);
   });
 
   it('should return 200,false (not blocked)', () => {

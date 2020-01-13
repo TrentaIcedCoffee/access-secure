@@ -17,8 +17,8 @@ exports.handler = async event => {
       ip,
     } = await parseInput(event, 'appId,Authorization,ip');
 
-    const resBlocked = await auth(db, appId, Authorization).
-      then(() => isBlocked(db, appId, ip));
+    const resBlocked = await auth(db, `apps/${appId}`, Authorization).
+      then(() => isBlocked(db, `apps/${appId}`, ip));
 
     return {
       statusCode: 200,
@@ -30,6 +30,8 @@ exports.handler = async event => {
     /* istanbul ignore else */
     if (err instanceof UserError) return errorOf(err.statusCode, err.message);
     /* istanbul ignore next */
-    return errorOf(500, process.env.DEV === 'true' ? err.message : 'Internal Server Error');
+    console.warn(err.message);
+    /* istanbul ignore next */
+    return errorOf(500, 'Internal Server Error');
   }
 };

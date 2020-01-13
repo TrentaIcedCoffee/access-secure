@@ -4,7 +4,7 @@ const chai = require('chai');
 chai.should();
 chai.use(require('chai-as-promised'));
 
-const { db } = require('../../funcs/logsPost/utils');
+const { db, deleteDoc } = require('../../utils/utils');
 const handler = require('../../funcs/logsPost/').handler;
 
 describe('#logsPost', () => {
@@ -22,13 +22,13 @@ describe('#logsPost', () => {
     ip = '0.0.0.0';
 
   before(() => {
-    return db.collection('apps').doc('test').set({
+    return db.doc(`apps/${appId}`).set({
       token: 'token',
     });
   });
 
   after(() => {
-    return db.collection('apps').doc('test').delete();
+    return deleteDoc(db, `apps/${appId}`);
   });
 
   it('should return 200 with posted id', () => {

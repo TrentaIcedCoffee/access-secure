@@ -44,6 +44,11 @@ const parseInput = async (event, keyStr) => {
   return res;
 };
 
+/**
+  doc: firebase doc ref
+  col: firebase collection ref
+*/
+
 const admin = require('firebase-admin');
 const serviceAccount = require('./resources/serviceAccountKey.json');
 admin.initializeApp({
@@ -52,34 +57,69 @@ admin.initializeApp({
 });
 const db = admin.firestore();
 
-const auth = async (db, appId, Authorization) => {
+const Timestamp = admin.firestore.Timestamp;
+
+const _deleteAll = async (db, t) => {
+  const
+    stack = new Array(t),
+    batch = db.batch();
+
+  while (stack.length) {
+    const { path, type } = stack.pop();
+    if (type === 'doc') {
+      batch.delete(db.doc(path));
+      await db.doc(path).listCollections().then(cols => {
+        cols.forEach(col => {
+          stack.push({ path: `${path}/${col.id}`, type: 'col' });
+        });
+      });
+    } else {
+      await db.collection(path).listDocuments().then(docs => {
+        docs.forEach(doc => {
+          stack.push({ path: `${path}/${doc.id}`, type: 'doc' });
+        });
+      });
+    }
+  }
+  return batch.commit();
+};
+
+const deleteDoc = async (db, path) => {
+  return _deleteAll(db, { path, type: 'doc' });
+};
+
+const deleteCollection = async (db, path) => {
+  return _deleteAll(db, { path, type: 'col' });
+};
+
+const auth = async (db, appPath, Authorization) => {
   if (!_.isString(Authorization) || !Authorization.startsWith('Basic ')) {
     throw new UserError('Authorization invalid format', 401);
   }
   const token = Authorization.substr('Basic '.length);
-  await db.collection('apps').doc(appId).get()
+  await db.doc(appPath).get()
     .then(doc => {
       if (doc.exists && doc.data().token === token) return;
       throw new UserError('app token not match', 401);
     });
 };
 
-const Timestamp = admin.firestore.Timestamp;
-
-const isBlocked = async (db, appId, ip) => {
+const isBlocked = async (db, appPath, ip) => {
   const res = await Promise.all([
-    db.doc(`apps/${appId}/whitelist/${ip}`).get().then(doc => doc.exists),
-    db.doc(`apps/${appId}/blacklist/${ip}`).get().then(doc => doc.exists),
+    db.doc(`${appPath}/whitelist/${ip}`).get().then(doc => doc.exists),
+    db.doc(`${appPath}/blacklist/${ip}`).get().then(doc => doc.exists),
   ]);
   return !res[0] && res[1];
 };
 
 module.exports = {
-  parseInput,
-  errorOf,
-  db,
-  auth,
-  Timestamp,
-  isBlocked,
   UserError,
+  errorOf,
+  parseInput,
+  db,
+  Timestamp,
+  deleteDoc,
+  deleteCollection,
+  auth,
+  isBlocked,
 };
