@@ -112,6 +112,23 @@ const isBlocked = async (db, appPath, ip) => {
   return !res[0] && res[1];
 };
 
+const isSpamming = async (db, appPath, ip) => {
+  const res = await db.collection(`${appPath}/logs`)
+    .where('ip', '==', ip).orderBy('timestamp', 'desc')
+    .limit(6)
+    .get()
+    .then(qs => {
+      if (qs.size === 6) {
+        const
+          start = qs.docs[0].data().timestamp.toDate(),
+          end = qs.docs[qs.size - 1].data().timestamp.toDate();
+        return end - start < 1000;
+      }
+      return false;
+    });
+  return res;
+};
+
 module.exports = {
   UserError,
   errorOf,
@@ -122,4 +139,5 @@ module.exports = {
   deleteCollection,
   auth,
   isBlocked,
+  isSpamming,
 };
