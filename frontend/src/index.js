@@ -14,6 +14,7 @@ import reducers from './reducers';
 import { Doc, Console, Auth } from './pages/';
 import { Navtop } from './components/';
 import { auth } from './funcs/firebase';
+import { alterUser } from './actions/';
 
 const history = createBrowserHistory();
 
@@ -31,7 +32,7 @@ const store = createStore(
 );
 
 auth.onAuthStateChanged(user => {
-  store.dispatch({ type: 'SET_USER', payload: { user } });
+  store.dispatch(alterUser(user));
 });
 
 ReactDOM.render(

@@ -26,7 +26,7 @@ class Navtop extends React.Component {
         <Navbar.Brand >Access-Secure</Navbar.Brand>
         <Link to="/install">Install</Link>
         <Nav className="mr-auto"></Nav>
-        {pathname === '/console' ? 
+        {pathname !== '/' ? 
           <div>
             {
               user &&

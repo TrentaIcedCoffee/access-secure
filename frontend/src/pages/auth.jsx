@@ -16,16 +16,14 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.sass';
 
-const mapStateToProps = state => {
-  return {
-    user: state.auth.user,
-    authPage: state.auth.authPage,
-    email: state.auth.email,
-    password: state.auth.password,
-    passwordRe: state.auth.passwordRe,
-    errors: state.auth.errors,
-  };
-};
+const mapStateToProps = state => ({
+  user: state.auth.user,
+  authPage: state.auth.authPage,
+  email: state.auth.email,
+  password: state.auth.password,
+  passwordRe: state.auth.passwordRe,
+  errors: state.auth.errors,
+});
 
 const mapDispatchToProps = dispatch => ({
   redirect: path => dispatch(redirect(path)),
