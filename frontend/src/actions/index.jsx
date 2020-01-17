@@ -4,19 +4,23 @@ import { push } from 'connected-react-router';
 export const alterUser = user => dispatch => {
   dispatch({ type: 'SET_USER', payload: { user } });
   if (user) {
-    const apps = [];
-    db.collection('apps')
-      .where('uid', '==', user.uid)
-      .get()
-      .then(qs => {
-        qs.forEach(ds => {
-          apps.push({ ...ds.data(), id: ds.id });
-        });
-        dispatch({ type: 'SET_APPS', payload: { apps: apps }});
-      });
+    dispatch(setApps(user));
   } else {
     dispatch({ type: 'UNSET_ALL', payload: {} });
   }
+};
+
+export const setApps = user => dispatch => {
+  const apps = [];
+  db.collection('apps')
+    .where('uid', '==', user.uid)
+    .get()
+    .then(qs => {
+      qs.forEach(ds => {
+        apps.push({ ...ds.data(), id: ds.id });
+      });
+      dispatch({ type: 'SET_APPS', payload: { apps: apps }});
+    });
 };
 
 export const redirect = path => dispatch => {
@@ -99,10 +103,41 @@ export const appById = appId => dispatch => {
       qs.forEach(ds => blacklist.push({ ...ds.data(), ip: ds.id }));
       dispatch({ type: 'SET_BLACKLIST', payload: { blacklist } });
     });
-  db.collection(`apps/${appId}/logs`).get()
+  db.collection(`apps/${appId}/logs`).limit(100).get()
     .then(qs => {
       const logs = [];
       qs.forEach(ds => logs.push({ ...ds.data(), id: ds.id }));
       dispatch({ type: 'SET_LOGS', payload: { logs } });
     });
 };
+
+export const showModal = modal => dispatch => {
+  dispatch({ type: 'SHOW_MODAL', payload: { modal } });
+  if (modal === 'newApp') {
+    dispatch(generateNewAppToken());
+  }
+};
+
+export const closeModal = () => ({
+  type: 'HIDE_MODAL',
+  payload: {},
+});
+
+export const createApp = (user, newAppName, token) => dispatch => {
+  db.collection('apps').add({
+    name: newAppName, uid: user.uid, token,
+  }).then(_ => {
+    dispatch(setApps(user));
+    dispatch(closeModal());
+  }).catch();
+};
+
+export const changeNewAppName = value => ({
+  type: 'CHANGE_NEW_APP_NAME',
+  payload: { newAppName: value },
+});
+
+export const generateNewAppToken = () => ({
+  type: 'GENERATE_NEW_APP_TOKEN',
+  payload: { newAppToken: Math.random().toString(36).slice(2) },
+});

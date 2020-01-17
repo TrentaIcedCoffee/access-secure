@@ -71,21 +71,23 @@ body
   width: 100%
   padding: 2rem 0
   display: flex
-  .left
-    height: 100%
-    width: 20%
-    .list-group-item
-      border-radius: 0
-      &:hover
-        background-color: rgba(0, 0, 0, 0.2)
-    .active
-      border: 0
-      background-color: rgba(0, 0, 0, 0.3)
-  .right
-    height: 100%
-    width: 80%
+  .noApp
+    width: 40%
+    margin: auto
+    margin-top: 10rem
+    text-align: center
+    font-weight: 500
+    font-size: 4rem
+    color: #6c757d
+    user-select: none
+  .withApp
+    width: 100%
     .row
       margin: 2rem 2rem
       .card
-        height: 150px
+        height: 160px
         width: 400px
+        .text-muted
+          margin: 0.8rem 0
+        .btn
+          margin: 0.8rem 0.3rem 0.1rem 0
