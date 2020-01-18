@@ -39,13 +39,22 @@ const mapDispatchToProps = dispatch => ({
 
 class Auth extends React.Component {
   
+  onKeyPress = e => {
+    const { email, password, passwordRe, authPage } = this.props;
+    const { login, register } = this.props;
+    if (e.which === 13 || e.keyCode === 13) {
+      if (authPage === 'login') login(email, password);
+      else if (authPage === 'register') register(email, password, passwordRe);
+    }
+  }
+  
   render = () => {
     const {
       user, authPage, errors, email, password, passwordRe,
     } = this.props;
     const {
       redirect, login, register, toLogin, toRegister, changeInput,
-      dropAuthError
+      dropAuthError,
     } = this.props;
     if (user) {
       redirect('/console');
@@ -53,7 +62,7 @@ class Auth extends React.Component {
     return (
       <div className="auth">
         <div className="mid">
-          <Form>
+          <Form onKeyPress={this.onKeyPress}>
             <Form.Group>
               <Form.Label>Email address</Form.Label>
               <Form.Control

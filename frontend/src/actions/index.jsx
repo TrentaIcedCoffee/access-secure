@@ -34,36 +34,33 @@ export const setUser = user => {
   };
 };
 
-export const login = (email, password) => {
-  return dispatch => {
-    auth.signInWithEmailAndPassword(email, password)
-      .then()
-      .catch(err => dispatch({
-        type: 'NEW_AUTH_ERROR',
-        payload: { error: err.message },
-      }));
-  };
+export const login = (email, password) => dispatch => {
+  auth.signInWithEmailAndPassword(email, password)
+    .then()
+    .catch(err => dispatch({
+      type: 'NEW_AUTH_ERROR',
+      payload: { error: err.message },
+    }));
 };
 
 export const logout = () => dispath => {
   auth.signOut();
 };
 
-export const register = (email, password, passwordRe) => {
+export const register = (email, password, passwordRe) => dispatch => {
   if (password !== passwordRe) {
-    return {
+    dispatch({
       type: 'NEW_AUTH_ERROR',
       payload: { error: 'password retype not match' },
-    };
+    });
+    return;
   }
-  return dispatch => {
-    auth.createUserWithEmailAndPassword(email, password)
-      .then()
-      .catch(err => dispatch({
-        type: 'NEW_AUTH_ERROR',
-        payload: { error: err.message },
-      }));
-  };
+  auth.createUserWithEmailAndPassword(email, password)
+    .then()
+    .catch(err => dispatch({
+      type: 'NEW_AUTH_ERROR',
+      payload: { error: err.message },
+    }));
 };
 
 export const toLogin = () => ({
