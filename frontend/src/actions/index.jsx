@@ -1,5 +1,4 @@
 import { auth, db } from '../funcs/firebase';
-import { push } from 'connected-react-router';
 
 export const alterUser = user => dispatch => {
   dispatch({ type: 'SET_USER', payload: { user } });
@@ -21,10 +20,6 @@ export const setApps = user => dispatch => {
       });
       dispatch({ type: 'SET_APPS', payload: { apps: apps }});
     });
-};
-
-export const redirect = path => dispatch => {
-  dispatch(push(path)); // TODO
 };
 
 export const setUser = user => {

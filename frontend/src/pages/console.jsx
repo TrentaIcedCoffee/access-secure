@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 
 import {
-  redirect, appById, showModal, closeModal,
+  appById, showModal, closeModal,
 } from '../actions/';
 
 import {
@@ -22,7 +23,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  redirect: path => dispatch(redirect(path)),
   appById: appId => dispatch(appById(appId)),
   showModal: modal => dispatch(showModal(modal)),
   closeModal: () => dispatch(closeModal()),
@@ -34,10 +34,10 @@ class Console extends React.Component {
       user, app, logs, blacklist, whitelist, modal
     } = this.props;
     const {
-      redirect, showModal, closeModal,
+      showModal, closeModal,
     } = this.props;
     if (!user) {
-      redirect('/auth');
+      return <Redirect to="/auth" />;
     }
     return (
       <div className="console">

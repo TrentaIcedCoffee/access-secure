@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router';
 
 import {
   login,
-  redirect,
   register,
   toLogin,
   toRegister,
@@ -26,7 +26,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  redirect: path => dispatch(redirect(path)),
   login: (email, password) => dispatch(login(email, password)),
   register: (email, password, passwordRe) => (
     dispatch(register(email, password, passwordRe))
@@ -53,11 +52,11 @@ class Auth extends React.Component {
       user, authPage, errors, email, password, passwordRe,
     } = this.props;
     const {
-      redirect, login, register, toLogin, toRegister, changeInput,
+      login, register, toLogin, toRegister, changeInput,
       dropAuthError,
     } = this.props;
     if (user) {
-      redirect('/console');
+      return <Redirect to="/console" />;
     }
     return (
       <div className="auth">
