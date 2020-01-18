@@ -17,7 +17,7 @@ class Doc extends React.Component {
             <li>Various frameworks supports</li>
           </ul>
           <div className="btns">
-            <Link to='/install'><Button variant="outline-info" size="lg">Install</Button></Link>
+            {/*<Link to='/install'><Button variant="outline-info" size="lg">Install</Button></Link>*/}
             <Link to='/console'><Button variant="outline-success" size="lg">To Console</Button></Link>
           </div>
           <div className="text-muted">

@@ -44,9 +44,11 @@ class Navtop extends React.Component {
     return (
       <Navbar className="navbar" variant="dark">
         <Navbar.Brand >Access-Secure</Navbar.Brand>
+        {/*
         <Link to="/install">
           <Button variant="outline-info">Install</Button>
         </Link>
+        */}
         {user &&
         <ButtonToolbar>
           <DropdownButton
