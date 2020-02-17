@@ -83,24 +83,25 @@ const dbUtils = db => {
       });
   };
 
-  const isBlocked = async (appId, ip) => {
-    const res = await Promise.all([
-      db.doc(`apps/${appId}/whitelist/${ip}`).get().then(doc => doc.exists),
+  const ipStatus = async (appId, ip) => {
+    const [inBlacklist, inWhitelist] = await Promise.all([
       db.doc(`apps/${appId}/blacklist/${ip}`).get().then(doc => doc.exists),
+      db.doc(`apps/${appId}/whitelist/${ip}`).get().then(doc => doc.exists),
     ]);
-    return !res[0] && res[1];
+    return { inBlacklist, inWhitelist };
   };
 
   const isSpamming = async (appId, ip) => {
     const res = await db.collection(`apps/${appId}/logs`)
       .where('ip', '==', ip).orderBy('timestamp', 'desc')
-      .limit(6)
+      .limit(4)
       .get()
       .then(qs => {
-        if (qs.size === 6) {
+        if (qs.size === 4) {
           const
             start = qs.docs[0].data().timestamp.toDate(),
             end = qs.docs[qs.size - 1].data().timestamp.toDate();
+          console.warn(start, end);
           return end - start < 1000;
         }
         return false;
@@ -112,7 +113,14 @@ const dbUtils = db => {
     await db.collection(`apps/${appId}/logs`).add(log);
   };
 
-  return { deleteDoc, deleteCollection, auth, isBlocked, isSpamming, postLog };
+  const addToBlacklist = async (appId, ip) => {
+    await db.collection(`apps/${appId}/blacklist`).doc(ip).set({});
+  };
+
+  return {
+    deleteDoc, deleteCollection, auth, ipStatus, isSpamming, postLog,
+    addToBlacklist,
+  };
 };
 
 module.exports = {

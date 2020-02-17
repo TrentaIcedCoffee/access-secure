@@ -2,9 +2,7 @@
 
 const admin = require('firebase-admin');
 const {
-  UserError,
-  parseInput,
-  dbUtils,
+  UserError, parseInput, dbUtils,
 } = require('./utils');
 const serviceAccount = require('./resources/serviceAccountKey.json');
 admin.initializeApp({
@@ -14,22 +12,20 @@ admin.initializeApp({
 const db = admin.firestore();
 const Timestamp = admin.firestore.Timestamp;
 const {
-  deleteDoc,
-  deleteCollection,
-  auth,
-  isBlocked,
-  isSpamming,
-  postLog,
+  deleteDoc, deleteCollection, auth, ipStatus, isSpamming, postLog,
+  addToBlacklist,
 } = dbUtils(db);
 
 const userError = msg => ({
   statusCode: 400,
   body: { msg },
 });
+
 const serverError = msg => ({
   statusCode: 500,
   body: { msg },
 });
+
 const ok = (isBlocked, msg) => ({
   statusCode: 200,
   body: { isBlocked, msg },
@@ -42,27 +38,25 @@ exports.handler = async event => {
       token,
       log,
     } = await parseInput(event, 'appId,token,log');
-
     if (!log.ip) throw new UserError('log missing ip');
-    log.ts = Timestamp.now();
+    log.timestamp = Timestamp.now();
 
-    return auth(db, appId, token)
-      .then(() => isBlocked(db, `apps/${appId}`, log.ip))
-      .then(res => {
-        if (res) {
-          return ok(true, `${log.ip} banned for blacklist`);
-        } else {
-          return isSpamming(db, `apps/${appId}`, log.ip);
-        }
-      })
-      .then(res => {
-        if (res) {
-          return ok(true, `${log.ip} banned for spamming`);
-        } else {
-          return postLog(appId, log);
-        }
-      })
-      .then(() => ok(false, 'ok'));
+    await auth(appId, token);
+
+    const { inBlacklist, inWhitelist } = await ipStatus(appId, log.ip);
+
+    if (inBlacklist) {
+      return ok(true, `${log.ip} banned for blacklist`);
+    }
+
+    if (!inWhitelist && await isSpamming(appId, log.ip)) {
+      await addToBlacklist(appId, log.ip);
+      return ok(true, `${log.ip} banned for spamming`);
+    }
+
+    await postLog(appId, log);
+
+    return ok(false, 'ok');
   } catch (err) {
     /* istanbul ignore else */
     if (err instanceof UserError) return userError(err.message);
