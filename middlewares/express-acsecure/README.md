@@ -1,4 +1,4 @@
-![npm](https://img.shields.io/npm/v/express-acsecure)
+[![npm version](https://badge.fury.io/js/express-acsecure.svg)](https://badge.fury.io/js/express-acsecure)
 
 # express-acsecure
 
