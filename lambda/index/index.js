@@ -12,8 +12,7 @@ admin.initializeApp({
 const db = admin.firestore();
 const Timestamp = admin.firestore.Timestamp;
 const {
-  deleteDoc, deleteCollection, auth, ipStatus, isSpamming, postLog,
-  addToBlacklist,
+  auth, ipStatus, isSpamming, postLog, addToBlacklist,
 } = dbUtils(db);
 
 const userError = msg => ({

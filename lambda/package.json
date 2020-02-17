@@ -1,8 +1,7 @@
 {
-  "name": "lambda",
-  "version": "0.0.0",
-  "description": "dev environment",
-  "main": "index.js",
+  "name": "access-secure-lambda",
+  "version": "0.1.0",
+  "description": "aws lambda for access secure",
   "scripts": {
     "test": "mocha tests/*",
     "lint": "eslint .",

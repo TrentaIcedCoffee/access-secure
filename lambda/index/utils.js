@@ -84,7 +84,7 @@ const dbUtils = db => {
   };
 
   const ipStatus = async (appId, ip) => {
-    const [inBlacklist, inWhitelist] = await Promise.all([
+    const [ inBlacklist, inWhitelist ] = await Promise.all([
       db.doc(`apps/${appId}/blacklist/${ip}`).get().then(doc => doc.exists),
       db.doc(`apps/${appId}/whitelist/${ip}`).get().then(doc => doc.exists),
     ]);
