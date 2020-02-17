@@ -30,7 +30,7 @@ const acsecure = (appId, token, forbiddenCallback) => (
         if (err) next(err);
         const { statusCode, body } = resBody;
         if (statusCode != 200) {
-          next(new AccessSecureConfigError(body.body.msg));
+          next(new AccessSecureConfigError(body.msg));
         } else if (body.isBlocked) {
           forbiddenCallback(res);
         } else {
