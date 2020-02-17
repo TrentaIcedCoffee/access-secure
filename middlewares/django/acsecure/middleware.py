@@ -3,7 +3,7 @@ import requests
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
 
-ENDPOINT = 'https://u35f64zo0i.execute-api.us-east-1.amazonaws.com/prod'
+ENDPOINT = 'https://api.logsecure.io/'
 
 def ipOf(request):
   xForwardedFor = request.META.get('HTTP_X_FORWARDED_FOR')
