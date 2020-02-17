@@ -24,7 +24,7 @@ Access Secure middleware for Django, for logging, anti-spamming and black/white 
 ### register    
 <img alt="register.JPG" src="./images/register.JPG" width="600" />    
 
-### create-project    
+### create project    
 <img alt="create-project.JPG" src="./images/create-project.JPG" width="600" />    
 
 ### project ID and Token    
