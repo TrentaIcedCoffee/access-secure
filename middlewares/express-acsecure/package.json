@@ -1,0 +1,28 @@
+{
+  "name": "express-acsecure",
+  "version": "0.1.1",
+  "description": "Express middleware for Access Secure",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TrentaIcedCoffee/access-secure.git"
+  },
+  "keywords": [
+    "express",
+    "log",
+    "anti-spam",
+    "blacklist"
+  ],
+  "author": "Xin Jin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TrentaIcedCoffee/access-secure/issues"
+  },
+  "homepage": "https://github.com/TrentaIcedCoffee/access-secure#readme",
+  "dependencies": {
+    "request": "^2.88.2"
+  }
+}
