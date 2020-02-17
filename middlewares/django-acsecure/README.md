@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/django-acsecure.svg)](https://badge.fury.io/py/django-acsecure)
+
 # django-acsecure
 
 Access Secure middleware for Django, for logging, anti-spamming and black/white list...
