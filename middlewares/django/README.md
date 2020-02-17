@@ -22,10 +22,10 @@ Access Secure middleware for Django, for logging, anti-spamming and black/white 
 
 ## Images
 ### register    
-<img alt="register.JPG" src="/images/register.JPG" width="600" />    
+<img alt="register.JPG" src="https://github.com/TrentaIcedCoffee/access-secure/blob/master/images/register.JPG" width="600" />    
 
 ### create project    
-<img alt="create-project.JPG" src="/images/create-project.JPG" width="600" />    
+<img alt="create-project.JPG" src="https://github.com/TrentaIcedCoffee/access-secure/blob/master/images/create-project.JPG" width="600" />    
 
 ### project ID and Token    
-<img alt="console.JPG" src="/images/console.JPG" width="600" />    
+<img alt="console.JPG" src="https://github.com/TrentaIcedCoffee/access-secure/blob/master/images/console.JPG" width="600" />    
