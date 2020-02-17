@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/django-acsecure.svg)](https://badge.fury.io/py/django-acsecure)
+
 # Access Secure middleware
 ### Frameworks Support
  - [Django](#django-acsecure)  `pip install django-acsecure`
