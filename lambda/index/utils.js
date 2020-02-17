@@ -99,9 +99,8 @@ const dbUtils = db => {
       .then(qs => {
         if (qs.size === 4) {
           const
-            start = qs.docs[0].data().timestamp.toDate(),
-            end = qs.docs[qs.size - 1].data().timestamp.toDate();
-          console.warn(start, end);
+            end = qs.docs[0].data().timestamp.toDate(),
+            start = qs.docs[qs.size - 1].data().timestamp.toDate();
           return end - start < 1000;
         }
         return false;
