@@ -1,0 +1,15 @@
+{
+  "name": "access-secure-koa-example",
+  "version": "0.1.0",
+  "description": "Node Koa example for Access Secure",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-acsecure": "^0.1.1",
+    "koa-bodyparser": "^4.2.1"
+  }
+}
