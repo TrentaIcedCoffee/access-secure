@@ -1,3 +1,5 @@
+[![npm version](https://badge.fury.io/js/koa-acsecure.svg)](https://badge.fury.io/js/koa-acsecure)
+
 # koa-acsecure
 
 Access Secure middleware for Koa (node), for logging, anti-spamming and black/white list...
