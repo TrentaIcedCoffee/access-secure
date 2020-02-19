@@ -1,5 +1,5 @@
-import requests
 from flask import request, abort
+import requests
 
 class AccessSecureConfigError(Exception):
   def __init__(self, message):

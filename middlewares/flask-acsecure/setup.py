@@ -7,7 +7,7 @@ with open(join(dirname(__file__), 'README.md'), 'r') as f:
   longDescription = f.read()
 
 with open(join(dirname(__file__), 'requirements.txt'), 'r') as f:
-  install_requires = f.read().split("\n")
+  installRequires = f.read().split('\n')
 
 setup(
   name='Flask-ACSecure',
@@ -29,5 +29,5 @@ setup(
   version=app.__version__,
   include_package_data=True,
   packages=find_packages(),
-  install_requires=install_requires,
+  install_requires=installRequires,
 )

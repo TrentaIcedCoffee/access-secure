@@ -3,3 +3,4 @@ venv/
 __pycache__/
 dist/
 Flask_ACSecure.egg-info/
+build/
