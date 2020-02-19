@@ -1,4 +1,3 @@
-
 [![PyPI version](https://badge.fury.io/py/Flask-ACSecure.svg)](https://badge.fury.io/py/Flask-ACSecure)
 
 # Flask-ACSecure
